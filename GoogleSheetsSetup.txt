@@ -1,0 +1,215 @@
+📋 GOOGLE SHEETS AUTO-SYNC SETUP INSTRUCTIONS
+================================================
+
+STEP 1: Create a Google Sheet
+------------------------------
+1. Go to https://sheets.google.com
+2. Create a new blank spreadsheet
+3. Name it "Basketball Analytics - Game Data"
+
+STEP 2: Open Apps Script Editor
+--------------------------------
+1. In your Google Sheet, click: Extensions → Apps Script
+2. Delete any default code that appears
+
+STEP 3: Copy and Paste This Code
+---------------------------------
+Copy everything between the dashed lines below:
+
+-----------------------------------
+function doPost(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var data = JSON.parse(e.postData.contents);
+  
+  // Save raw JSON to backup sheet
+  var backupSheet = ss.getSheetByName('Backup_JSON');
+  if (!backupSheet) {
+    backupSheet = ss.insertSheet('Backup_JSON');
+  }
+  backupSheet.clear();
+  backupSheet.appendRow(['Last Updated', new Date()]);
+  backupSheet.appendRow(['Raw Data', JSON.stringify(data)]);
+  
+  // Paint Touch Stats Table
+  var paintSheet = ss.getSheetByName('Paint Touch Stats');
+  if (!paintSheet) {
+    paintSheet = ss.insertSheet('Paint Touch Stats');
+  }
+  paintSheet.clear();
+  paintSheet.appendRow(['PAINT TOUCH ANALYSIS - Last Updated: ' + new Date()]);
+  paintSheet.appendRow([]);
+  paintSheet.appendRow(['Team', 'Total Poss', 'Paint Touch Poss', 'Paint Touch %', 'Paint Touch PPP', 'No Paint Touch Poss', 'No Paint Touch %', 'No Paint Touch PPP', 'Overall PPP']);
+  
+  // Calculate and add White Team data
+  var whitePaintPoss = data.scrimmageStats.white.paintTouch.possessions;
+  var whitePaintPts = data.scrimmageStats.white.paintTouch.points;
+  var whiteNoPaintPoss = data.scrimmageStats.white.noPaintTouch.possessions;
+  var whiteNoPaintPts = data.scrimmageStats.white.noPaintTouch.points;
+  var whiteTotalPoss = whitePaintPoss + whiteNoPaintPoss;
+  var whiteTotalPts = whitePaintPts + whiteNoPaintPts;
+  
+  paintSheet.appendRow([
+    'White',
+    whiteTotalPoss,
+    whitePaintPoss,
+    whiteTotalPoss > 0 ? (whitePaintPoss / whiteTotalPoss * 100).toFixed(1) + '%' : '0%',
+    whitePaintPoss > 0 ? (whitePaintPts / whitePaintPoss).toFixed(2) : '0.00',
+    whiteNoPaintPoss,
+    whiteTotalPoss > 0 ? (whiteNoPaintPoss / whiteTotalPoss * 100).toFixed(1) + '%' : '0%',
+    whiteNoPaintPoss > 0 ? (whiteNoPaintPts / whiteNoPaintPoss).toFixed(2) : '0.00',
+    whiteTotalPoss > 0 ? (whiteTotalPts / whiteTotalPoss).toFixed(2) : '0.00'
+  ]);
+  
+  // Calculate and add Blue Team data
+  var bluePaintPoss = data.scrimmageStats.blue.paintTouch.possessions;
+  var bluePaintPts = data.scrimmageStats.blue.paintTouch.points;
+  var blueNoPaintPoss = data.scrimmageStats.blue.noPaintTouch.possessions;
+  var blueNoPaintPts = data.scrimmageStats.blue.noPaintTouch.points;
+  var blueTotalPoss = bluePaintPoss + blueNoPaintPoss;
+  var blueTotalPts = bluePaintPts + blueNoPaintPts;
+  
+  paintSheet.appendRow([
+    'Blue',
+    blueTotalPoss,
+    bluePaintPoss,
+    blueTotalPoss > 0 ? (bluePaintPoss / blueTotalPoss * 100).toFixed(1) + '%' : '0%',
+    bluePaintPoss > 0 ? (bluePaintPts / bluePaintPoss).toFixed(2) : '0.00',
+    blueNoPaintPoss,
+    blueTotalPoss > 0 ? (blueNoPaintPoss / blueTotalPoss * 100).toFixed(1) + '%' : '0%',
+    blueNoPaintPoss > 0 ? (blueNoPaintPts / blueNoPaintPoss).toFixed(2) : '0.00',
+    blueTotalPoss > 0 ? (blueTotalPts / blueTotalPoss).toFixed(2) : '0.00'
+  ]);
+  
+  // Add Overall row
+  var totalPoss = whiteTotalPoss + blueTotalPoss;
+  var totalPaintPoss = whitePaintPoss + bluePaintPoss;
+  var totalPaintPts = whitePaintPts + bluePaintPts;
+  var totalNoPaintPoss = whiteNoPaintPoss + blueNoPaintPoss;
+  var totalNoPaintPts = whiteNoPaintPts + blueNoPaintPts;
+  var totalPts = totalPaintPts + totalNoPaintPts;
+  
+  paintSheet.appendRow([
+    'OVERALL',
+    totalPoss,
+    totalPaintPoss,
+    totalPoss > 0 ? (totalPaintPoss / totalPoss * 100).toFixed(1) + '%' : '0%',
+    totalPaintPoss > 0 ? (totalPaintPts / totalPaintPoss).toFixed(2) : '0.00',
+    totalNoPaintPoss,
+    totalPoss > 0 ? (totalNoPaintPoss / totalPoss * 100).toFixed(1) + '%' : '0%',
+    totalNoPaintPoss > 0 ? (totalNoPaintPts / totalNoPaintPoss).toFixed(2) : '0.00',
+    totalPoss > 0 ? (totalPts / totalPoss).toFixed(2) : '0.00'
+  ]);
+  
+  // Format Paint Touch table
+  paintSheet.getRange('A1:I1').setFontWeight('bold').setFontSize(12);
+  paintSheet.getRange('A3:I3').setBackground('#4285F4').setFontColor('white').setFontWeight('bold');
+  paintSheet.getRange('A6:I6').setFontWeight('bold').setBackground('#E8EAED');
+  paintSheet.setColumnWidths(1, 9, 120);
+  
+  // Player Stats Table
+  var playerSheet = ss.getSheetByName('Player Stats');
+  if (!playerSheet) {
+    playerSheet = ss.insertSheet('Player Stats');
+  }
+  playerSheet.clear();
+  playerSheet.appendRow(['PLAYER ANALYSIS - Last Updated: ' + new Date()]);
+  playerSheet.appendRow([]);
+  playerSheet.appendRow(['Player', 'Name', 'Press Up +', 'Press Up -', 'Press Up %', 'At Level +', 'At Level -', 'At Level %', 'Total Actions']);
+  
+  // Player roster
+  var playerRoster = {
+    '1': 'Ashworth', '2': 'Guy', '3': 'Gordon', '4': 'Peter', '5': 'McBride',
+    '6': 'Hildreth', '7': 'Jones', '10': 'Dennis', '11': 'Felton', '12': 'Iraldi',
+    '13': 'Spalding', '15': 'Coupet Jr', '18': 'Slawson', '23': 'Ithiel', '29': 'Jackson',
+    '30': 'McGlothan', '31': 'Rorie', '33': 'Sterling', '35': 'Johnson'
+  };
+  
+  // Add player data
+  Object.keys(data.scrimmagePlayerStats).forEach(function(playerNum) {
+    var stats = data.scrimmagePlayerStats[playerNum];
+    var pressUpPos = stats.pressUp.positive;
+    var pressUpNeg = stats.pressUp.negative;
+    var atLevelPos = stats.atLevel.positive;
+    var atLevelNeg = stats.atLevel.negative;
+    var totalActions = pressUpPos + pressUpNeg + atLevelPos + atLevelNeg;
+    
+    if (totalActions > 0) {  // Only show players with actions
+      var pressUpTotal = pressUpPos + pressUpNeg;
+      var pressUpRate = pressUpTotal > 0 ? (pressUpPos / pressUpTotal * 100).toFixed(1) + '%' : '0%';
+      var atLevelTotal = atLevelPos + atLevelNeg;
+      var atLevelRate = atLevelTotal > 0 ? (atLevelPos / atLevelTotal * 100).toFixed(1) + '%' : '0%';
+      
+      playerSheet.appendRow([
+        '#' + playerNum,
+        playerRoster[playerNum] || 'Unknown',
+        pressUpPos,
+        pressUpNeg,
+        pressUpRate,
+        atLevelPos,
+        atLevelNeg,
+        atLevelRate,
+        totalActions
+      ]);
+    }
+  });
+  
+  // Format Player Stats table
+  playerSheet.getRange('A1:I1').setFontWeight('bold').setFontSize(12);
+  playerSheet.getRange('A3:I3').setBackground('#4285F4').setFontColor('white').setFontWeight('bold');
+  playerSheet.setColumnWidths(1, 9, 110);
+  
+  return ContentService.createTextOutput('Success');
+}
+
+function doGet(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Backup_JSON');
+  if (!sheet) {
+    return ContentService.createTextOutput(JSON.stringify({}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+  
+  var dataCell = sheet.getRange(2, 2).getValue();
+  if (!dataCell) {
+    return ContentService.createTextOutput(JSON.stringify({}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+  
+  return ContentService.createTextOutput(dataCell)
+    .setMimeType(ContentService.MimeType.JSON);
+}
+-----------------------------------
+
+STEP 4: Deploy the Script
+--------------------------
+1. Click the "Deploy" button (top right)
+2. Select "New deployment"
+3. Click the gear/settings icon next to "Select type"
+4. Choose "Web app"
+5. Set these options:
+   - Description: "Basketball Analytics API"
+   - Execute as: "Me"
+   - Who has access: "Anyone"
+6. Click "Deploy"
+7. Click "Authorize access" and grant permissions
+8. Copy the "Web app URL" that appears
+
+STEP 5: Connect to Your App
+----------------------------
+1. Go to your Basketball Analytics app
+2. Click the "Game Totals" tab
+3. Paste the Web app URL into the text box
+4. Click "Connect to Google Sheets"
+
+DONE! 
+Your game data will now automatically save to Google Sheets whenever you click "Save to Scrimmages" (or "Save to Games").
+
+BENEFITS:
+- Your data is backed up in Google Drive
+- Access from any device by loading the same URL
+- Never lose your data if browser cookies clear
+- Can view/export data directly from Google Sheets
+
+TROUBLESHOOTING:
+- If you see "Authorization required", make sure you granted permissions in Step 4
+- If sync fails, try clicking "🔄 Sync Now" to manually reload data
+- The Google Sheet will show both raw JSON data and human-readable stats

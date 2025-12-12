@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; cursor: pointer; }
+        .active { background: blue; color: white; }
+        #status { padding: 10px; margin: 10px 0; background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>Button Functionality Test</h1>
+    
+    <div id="status">Status: Ready</div>
+    
+    <h3>Team Selection</h3>
+    <button id="white-btn" class="team-selector active" data-team="white">White Team</button>
+    <button id="blue-btn" class="team-selector" data-team="blue">Blue Team</button>
+    
+    <h3>Paint Touch Mode</h3>
+    <button id="paint-btn" class="paint-touch-toggle paint-touch active">Paint Touch</button>
+    <button id="no-paint-btn" class="paint-touch-toggle no-paint-touch">No Paint Touch</button>
+    
+    <h3>Score Points</h3>
+    <button class="score-btn" data-points="0">0 Points</button>
+    <button class="score-btn" data-points="1">1 Point</button>
+    <button class="score-btn" data-points="2">2 Points</button>
+    <button class="score-btn" data-points="3">3 Points</button>
+    <button class="score-btn" data-points="4">4 Points</button>
+    
+    <h3>Actions</h3>
+    <button id="undo-btn">Undo Last Action</button>
+    <button id="reset-btn">Reset All Data</button>
+
+    <script>
+        // Simple test variables
+        let activeTeam = 'white';
+        let activePaintTouch = true;
+        let actionCount = 0;
+
+        function updateStatus(message) {
+            document.getElementById('status').textContent = 'Status: ' + message;
+            console.log('Status:', message);
+        }
+
+        function updateActiveTeam(team) {
+            activeTeam = team;
+            document.querySelectorAll('.team-selector').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-team="${team}"]`).classList.add('active');
+            updateStatus(`Active team: ${team}`);
+        }
+
+        function updatePaintMode(hasPaintTouch) {
+            activePaintTouch = hasPaintTouch;
+            document.querySelectorAll('.paint-touch-toggle').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            if (hasPaintTouch) {
+                document.querySelector('.paint-touch').classList.add('active');
+                updateStatus('Mode: Paint Touch');
+            } else {
+                document.querySelector('.no-paint-touch').classList.add('active');
+                updateStatus('Mode: No Paint Touch');
+            }
+        }
+
+        function recordScore(points) {
+            actionCount++;
+            const touchType = activePaintTouch ? 'with paint touch' : 'without paint touch';
+            updateStatus(`Action ${actionCount}: ${activeTeam} team scored ${points} points ${touchType}`);
+        }
+
+        function undoAction() {
+            if (actionCount > 0) {
+                actionCount--;
+                updateStatus(`Undone action. Remaining actions: ${actionCount}`);
+            } else {
+                updateStatus('No actions to undo!');
+            }
+        }
+
+        function resetData() {
+            actionCount = 0;
+            updateStatus('All data reset');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, setting up event listeners...');
+            
+            // Team selection
+            document.querySelectorAll('.team-selector').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    console.log('Team button clicked:', this.dataset.team);
+                    updateActiveTeam(this.dataset.team);
+                });
+            });
+            
+            // Paint touch toggle
+            document.querySelector('.paint-touch').addEventListener('click', function() {
+                console.log('Paint touch button clicked');
+                updatePaintMode(true);
+            });
+            
+            document.querySelector('.no-paint-touch').addEventListener('click', function() {
+                console.log('No paint touch button clicked');
+                updatePaintMode(false);
+            });
+            
+            // Score buttons
+            document.querySelectorAll('.score-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const points = parseInt(this.dataset.points);
+                    console.log('Score button clicked:', points);
+                    recordScore(points);
+                });
+            });
+            
+            // Action buttons
+            document.getElementById('undo-btn').addEventListener('click', function() {
+                console.log('Undo button clicked');
+                undoAction();
+            });
+            
+            document.getElementById('reset-btn').addEventListener('click', function() {
+                console.log('Reset button clicked');
+                resetData();
+            });
+            
+            console.log('All event listeners set up successfully');
+            updateStatus('Ready - click buttons to test');
+        });
+    </script>
+</body>
+</html>
