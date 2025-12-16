@@ -1159,33 +1159,25 @@ function sortScrimmagePlayerTable(column) {
                 aValue = a.cells[0].textContent.trim();
                 bValue = b.cells[0].textContent.trim();
                 break;
-            case 'pressUpPos':
+            case 'pressUpTotal':
                 aValue = parseInt(a.cells[1].textContent) || 0;
                 bValue = parseInt(b.cells[1].textContent) || 0;
                 break;
-            case 'pressUpNeg':
-                aValue = parseInt(a.cells[2].textContent) || 0;
-                bValue = parseInt(b.cells[2].textContent) || 0;
-                break;
             case 'pressUpRate':
-                aValue = parseFloat(a.cells[3].textContent.replace('%', '')) || 0;
-                bValue = parseFloat(b.cells[3].textContent.replace('%', '')) || 0;
+                aValue = parseFloat(a.cells[2].textContent.replace('%', '')) || 0;
+                bValue = parseFloat(b.cells[2].textContent.replace('%', '')) || 0;
                 break;
-            case 'atLevelPos':
-                aValue = parseInt(a.cells[4].textContent) || 0;
-                bValue = parseInt(b.cells[4].textContent) || 0;
-                break;
-            case 'atLevelNeg':
-                aValue = parseInt(a.cells[5].textContent) || 0;
-                bValue = parseInt(b.cells[5].textContent) || 0;
+            case 'atLevelTotal':
+                aValue = parseInt(a.cells[3].textContent) || 0;
+                bValue = parseInt(b.cells[3].textContent) || 0;
                 break;
             case 'atLevelRate':
-                aValue = parseFloat(a.cells[6].textContent.replace('%', '')) || 0;
-                bValue = parseFloat(b.cells[6].textContent.replace('%', '')) || 0;
+                aValue = parseFloat(a.cells[4].textContent.replace('%', '')) || 0;
+                bValue = parseFloat(b.cells[4].textContent.replace('%', '')) || 0;
                 break;
             case 'totalActions':
-                aValue = parseInt(a.cells[7].textContent) || 0;
-                bValue = parseInt(b.cells[7].textContent) || 0;
+                aValue = parseInt(a.cells[5].textContent) || 0;
+                bValue = parseInt(b.cells[5].textContent) || 0;
                 break;
             default:
                 return 0;
@@ -2056,18 +2048,18 @@ function updateScrimmageStatsDisplay() {
             if (!stats || !stats.pressUp || !stats.atLevel) {
                 return;
             }
+            const pressUpTotal = stats.pressUp.positive + stats.pressUp.negative;
+            const atLevelTotal = stats.atLevel.positive + stats.atLevel.negative;
             const pressUpRate = calculateRate(stats.pressUp.positive, stats.pressUp.negative);
             const atLevelRate = calculateRate(stats.atLevel.positive, stats.atLevel.negative);
-            const totalActions = stats.pressUp.positive + stats.pressUp.negative + stats.atLevel.positive + stats.atLevel.negative;
+            const totalActions = pressUpTotal + atLevelTotal;
             
             html += `
                 <tr>
                     <td><strong>#${playerNum} ${playerRoster[playerNum]}</strong></td>
-                    <td><span class="highlight-number">${stats.pressUp.positive}</span></td>
-                    <td><span class="highlight-number">${stats.pressUp.negative}</span></td>
+                    <td><span class="highlight-number">${pressUpTotal}</span></td>
                     <td><span class="${getRateClass(pressUpRate)}">${pressUpRate}%</span></td>
-                    <td><span class="highlight-number">${stats.atLevel.positive}</span></td>
-                    <td><span class="highlight-number">${stats.atLevel.negative}</span></td>
+                    <td><span class="highlight-number">${atLevelTotal}</span></td>
                     <td><span class="${getRateClass(atLevelRate)}">${atLevelRate}%</span></td>
                     <td><span class="highlight-number">${totalActions}</span></td>
                 </tr>
