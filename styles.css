@@ -421,6 +421,69 @@ section {
     transition: all 0.2s ease;
 }
 
+/* Regular Season Stats Section - Same styling as Scrimmage */
+.regular-season-stats-section {
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 2px solid #3b82f6;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+}
+
+.regular-season-stats-section .stats-header {
+    border-bottom: 3px solid #3b82f6;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+}
+
+.regular-season-stats-section .stats-header h3 {
+    color: #1e40af;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.regular-season-stats-section .table-container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+    border: 1px solid #dbeafe;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.regular-season-stats-section .table-container h4 {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    margin: 0;
+    padding: 16px 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.regular-season-stats-section .stats-table {
+    border: none;
+}
+
+.regular-season-stats-section .stats-table thead th {
+    background: #f1f5f9;
+    color: #334155;
+    border-bottom: 2px solid #3b82f6;
+    font-weight: 600;
+    padding: 12px 16px;
+}
+
+.regular-season-stats-section .stats-table tbody tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+.regular-season-stats-section .stats-table tbody tr:hover {
+    background: #e0f2fe;
+    transform: scale(1.002);
+    transition: all 0.2s ease;
+}
+
 /* Danger button styling */
 .danger-btn {
     background: linear-gradient(135deg, #dc143c, #8b0000) !important;

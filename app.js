@@ -36,6 +36,18 @@ let scrimmageStats = {
     }
 };
 
+// Regular Season cumulative stats
+let regularSeasonStats = {
+    white: {
+        paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
+        noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+    },
+    blue: {
+        paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
+        noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+    }
+};
+
 // First 5 games historical snapshot (11/16/2024)
 const first5Stats = {
     white: {
@@ -66,12 +78,13 @@ const playerRoster = {
     0: "Blackshear", 1: "Ashworth", 2: "Guy", 3: "Gordon", 4: "Peter", 5: "Thompson",
     6: "Hildreth", 7: "Jones", 10: "Dennis", 11: "Felton", 12: "Iraldi",
     13: "Spalding", 15: "Toney", 18: "Slawson", 23: "Ithiel", 29: "Jackson",
-    30: "McGlothan", 31: "Rorie", 33: "El-Sheikh", 35: "Johnson"
+    30: "McGlothan", 31: "Taylor", 33: "El-Sheikh", 35: "Johnson"
 };
 
 let playerStats = {};
 let seasonPlayerStats = {};
 let scrimmagePlayerStats = {};
+let regularSeasonPlayerStats = {};
 let playerActionHistory = [];
 let selectedPlayer = null;
 
@@ -93,12 +106,20 @@ let seasonPlayerSortColumn = null;
 let seasonPlayerSortOrder = 'asc';
 let seasonTeamPressSortColumn = null;
 let seasonTeamPressSortOrder = 'asc';
+let regularSeasonPaintSortColumn = null;
+let regularSeasonPaintSortOrder = 'asc';
+let regularSeasonPlayerSortColumn = null;
+let regularSeasonPlayerSortOrder = 'asc';
+let regularSeasonTeamPressSortColumn = null;
+let regularSeasonTeamPressSortOrder = 'asc';
 
 // LocalStorage keys
 const STORAGE_KEY = 'basketball-paint-analytics-v2';
 const SEASON_STORAGE_KEY = 'basketball-paint-analytics-season-v2';
 const SCRIMMAGE_STORAGE_KEY = 'basketball-paint-analytics-scrimmage-v2';
+const REGULAR_SEASON_STORAGE_KEY = 'basketball-paint-analytics-regular-season-v2';
 const SNAPSHOTS_STORAGE_KEY = 'basketball-paint-analytics-snapshots-v2';
+const REGULAR_SEASON_SNAPSHOTS_STORAGE_KEY = 'basketball-paint-analytics-regular-season-snapshots-v2';
 
 // Quarter tracking variables
 let lastQuarterSnapshot = null;
@@ -123,6 +144,20 @@ function initializePlayerStats() {
             pressUp: { positive: 0, negative: 0 },
             atLevel: { positive: 0, negative: 0 }
         };
+        // Initialize regularSeasonPlayerStats if doesn't exist
+        if (!regularSeasonPlayerStats[playerNum]) {
+            regularSeasonPlayerStats[playerNum] = {
+                pressUp: { positive: 0, negative: 0 },
+                atLevel: { positive: 0, negative: 0 }
+            };
+        }
+        // Initialize scrimmagePlayerStats if doesn't exist
+        if (!scrimmagePlayerStats[playerNum]) {
+            scrimmagePlayerStats[playerNum] = {
+                pressUp: { positive: 0, negative: 0 },
+                atLevel: { positive: 0, negative: 0 }
+            };
+        }
     });
 }
 
@@ -267,6 +302,55 @@ function loadScrimmageFromLocalStorage() {
     // Initialize scrimmage player stats for new scrimmage data
     Object.keys(playerRoster).forEach(playerNum => {
         scrimmagePlayerStats[playerNum] = {
+            pressUp: { positive: 0, negative: 0 },
+            atLevel: { positive: 0, negative: 0 }
+        };
+    });
+    return false;
+}
+
+// Save Regular Season data to localStorage
+function saveRegularSeasonToLocalStorage() {
+    const regularSeasonData = {
+        regularSeasonStats: regularSeasonStats,
+        regularSeasonPlayerStats: regularSeasonPlayerStats,
+        timestamp: Date.now()
+    };
+    try {
+        localStorage.setItem(REGULAR_SEASON_STORAGE_KEY, JSON.stringify(regularSeasonData));
+    } catch (err) {
+        console.error('Error saving regular season data to localStorage:', err);
+    }
+}
+
+// Load Regular Season data from localStorage
+function loadRegularSeasonFromLocalStorage() {
+    try {
+        const saved = localStorage.getItem(REGULAR_SEASON_STORAGE_KEY);
+        if (saved) {
+            const regularSeasonData = JSON.parse(saved);
+            regularSeasonStats = regularSeasonData.regularSeasonStats || regularSeasonStats;
+            regularSeasonPlayerStats = regularSeasonData.regularSeasonPlayerStats || regularSeasonPlayerStats;
+            
+            // Ensure ALL players in current roster are initialized
+            Object.keys(playerRoster).forEach(playerNum => {
+                if (!regularSeasonPlayerStats[playerNum]) {
+                    regularSeasonPlayerStats[playerNum] = {
+                        pressUp: { positive: 0, negative: 0 },
+                        atLevel: { positive: 0, negative: 0 }
+                    };
+                }
+            });
+            
+            return true;
+        }
+    } catch (err) {
+        console.error('Error loading regular season data from localStorage:', err);
+    }
+    
+    // Initialize regular season player stats for new regular season data
+    Object.keys(playerRoster).forEach(playerNum => {
+        regularSeasonPlayerStats[playerNum] = {
             pressUp: { positive: 0, negative: 0 },
             atLevel: { positive: 0, negative: 0 }
         };
@@ -1044,6 +1128,226 @@ function sortSeasonTeamPressTable(column) {
     header.dataset.order = seasonTeamPressSortOrder;
 }
 
+// Regular Season table sorting functions
+function sortRegularSeasonPaintTable(column) {
+    const table = document.getElementById('regular-season-paint-percentage-table');
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr:not(.team-row-overall)'));
+    const overallRow = tbody.querySelector('.team-row-overall');
+    
+    // Toggle sort order if same column
+    if (regularSeasonPaintSortColumn === column) {
+        regularSeasonPaintSortOrder = regularSeasonPaintSortOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+        regularSeasonPaintSortOrder = 'asc';
+        regularSeasonPaintSortColumn = column;
+    }
+    
+    // Clear previous sort indicators
+    table.querySelectorAll('th').forEach(th => {
+        th.classList.remove('sorted-asc', 'sorted-desc');
+        delete th.dataset.order;
+    });
+    
+    // Sort rows (keeping overall row at bottom)
+    rows.sort((a, b) => {
+        let aValue, bValue;
+        
+        switch (column) {
+            case 'team':
+                aValue = a.cells[0].textContent.trim();
+                bValue = b.cells[0].textContent.trim();
+                break;
+            case 'totalPoss':
+                aValue = parseInt(a.cells[1].textContent) || 0;
+                bValue = parseInt(b.cells[1].textContent) || 0;
+                break;
+            case 'paintPoss':
+                aValue = parseInt(a.cells[2].textContent) || 0;
+                bValue = parseInt(b.cells[2].textContent) || 0;
+                break;
+            case 'paintPercent':
+                aValue = parseFloat(a.cells[3].textContent.replace('%', '')) || 0;
+                bValue = parseFloat(b.cells[3].textContent.replace('%', '')) || 0;
+                break;
+            case 'paintPPP':
+                aValue = parseFloat(a.cells[4].textContent) || 0;
+                bValue = parseFloat(b.cells[4].textContent) || 0;
+                break;
+            case 'noPaintPoss':
+                aValue = parseInt(a.cells[5].textContent) || 0;
+                bValue = parseInt(b.cells[5].textContent) || 0;
+                break;
+            case 'noPaintPercent':
+                aValue = parseFloat(a.cells[6].textContent.replace('%', '')) || 0;
+                bValue = parseFloat(b.cells[6].textContent.replace('%', '')) || 0;
+                break;
+            case 'noPaintPPP':
+                aValue = parseFloat(a.cells[7].textContent) || 0;
+                bValue = parseFloat(b.cells[7].textContent) || 0;
+                break;
+            default:
+                return 0;
+        }
+        
+        if (typeof aValue === 'string') {
+            return regularSeasonPaintSortOrder === 'asc' ? 
+                aValue.localeCompare(bValue) : 
+                bValue.localeCompare(aValue);
+        } else {
+            return regularSeasonPaintSortOrder === 'asc' ? aValue - bValue : bValue - aValue;
+        }
+    });
+    
+    // Clear tbody and re-add sorted rows
+    tbody.innerHTML = '';
+    rows.forEach(row => tbody.appendChild(row));
+    if (overallRow) tbody.appendChild(overallRow);
+    
+    // Update sort indicator
+    const header = table.querySelector(`th[data-column="${column}"]`);
+    header.classList.add(`sorted-${regularSeasonPaintSortOrder}`);
+    header.dataset.order = regularSeasonPaintSortOrder;
+}
+
+function sortRegularSeasonPlayerTable(column) {
+    const table = document.getElementById('regular-season-player-stats-table');
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    
+    // Toggle sort order if same column
+    if (regularSeasonPlayerSortColumn === column) {
+        regularSeasonPlayerSortOrder = regularSeasonPlayerSortOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+        regularSeasonPlayerSortOrder = 'asc';
+        regularSeasonPlayerSortColumn = column;
+    }
+    
+    // Clear previous sort indicators
+    table.querySelectorAll('th').forEach(th => {
+        th.classList.remove('sorted-asc', 'sorted-desc');
+        delete th.dataset.order;
+    });
+    
+    // Sort rows
+    rows.sort((a, b) => {
+        let aValue, bValue;
+        
+        switch (column) {
+            case 'player':
+                aValue = a.cells[0].textContent.trim();
+                bValue = b.cells[0].textContent.trim();
+                break;
+            case 'pressUpTotal':
+                aValue = parseInt(a.cells[1].textContent) || 0;
+                bValue = parseInt(b.cells[1].textContent) || 0;
+                break;
+            case 'pressUpRate':
+                aValue = parseFloat(a.cells[2].textContent.replace('%', '')) || 0;
+                bValue = parseFloat(b.cells[2].textContent.replace('%', '')) || 0;
+                break;
+            case 'atLevelTotal':
+                aValue = parseInt(a.cells[3].textContent) || 0;
+                bValue = parseInt(b.cells[3].textContent) || 0;
+                break;
+            case 'atLevelRate':
+                aValue = parseFloat(a.cells[4].textContent.replace('%', '')) || 0;
+                bValue = parseFloat(b.cells[4].textContent.replace('%', '')) || 0;
+                break;
+            case 'totalActions':
+                aValue = parseInt(a.cells[5].textContent) || 0;
+                bValue = parseInt(b.cells[5].textContent) || 0;
+                break;
+            default:
+                return 0;
+        }
+        
+        if (typeof aValue === 'string') {
+            return regularSeasonPlayerSortOrder === 'asc' ? 
+                aValue.localeCompare(bValue) : 
+                bValue.localeCompare(aValue);
+        } else {
+            return regularSeasonPlayerSortOrder === 'asc' ? aValue - bValue : bValue - aValue;
+        }
+    });
+    
+    // Clear tbody and re-add sorted rows
+    tbody.innerHTML = '';
+    rows.forEach(row => tbody.appendChild(row));
+    
+    // Update sort indicator
+    const header = table.querySelector(`th[data-column="${column}"]`);
+    header.classList.add(`sorted-${regularSeasonPlayerSortOrder}`);
+    header.dataset.order = regularSeasonPlayerSortOrder;
+}
+
+function sortRegularSeasonTeamPressTable(column) {
+    const table = document.getElementById('regular-season-team-press-stats-table');
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    
+    // Toggle sort order if same column
+    if (regularSeasonTeamPressSortColumn === column) {
+        regularSeasonTeamPressSortOrder = regularSeasonTeamPressSortOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+        regularSeasonTeamPressSortOrder = 'asc';
+        regularSeasonTeamPressSortColumn = column;
+    }
+    
+    // Clear previous sort indicators
+    table.querySelectorAll('th').forEach(th => {
+        th.classList.remove('sorted-asc', 'sorted-desc');
+        delete th.dataset.order;
+    });
+    
+    // Sort rows
+    rows.sort((a, b) => {
+        let aValue, bValue;
+        
+        switch (column) {
+            case 'category':
+                aValue = a.cells[0].textContent.trim();
+                bValue = b.cells[0].textContent.trim();
+                break;
+            case 'totalPos':
+                aValue = parseInt(a.cells[1].textContent) || 0;
+                bValue = parseInt(b.cells[1].textContent) || 0;
+                break;
+            case 'totalNeg':
+                aValue = parseInt(a.cells[2].textContent) || 0;
+                bValue = parseInt(b.cells[2].textContent) || 0;
+                break;
+            case 'successRate':
+                aValue = parseFloat(a.cells[3].textContent.replace('%', '')) || 0;
+                bValue = parseFloat(b.cells[3].textContent.replace('%', '')) || 0;
+                break;
+            case 'totalActions':
+                aValue = parseInt(a.cells[4].textContent) || 0;
+                bValue = parseInt(b.cells[4].textContent) || 0;
+                break;
+            default:
+                return 0;
+        }
+        
+        if (typeof aValue === 'string') {
+            return regularSeasonTeamPressSortOrder === 'asc' ? 
+                aValue.localeCompare(bValue) : 
+                bValue.localeCompare(aValue);
+        } else {
+            return regularSeasonTeamPressSortOrder === 'asc' ? aValue - bValue : bValue - aValue;
+        }
+    });
+    
+    // Clear tbody and re-add sorted rows
+    tbody.innerHTML = '';
+    rows.forEach(row => tbody.appendChild(row));
+    
+    // Update sort indicator
+    const header = table.querySelector(`th[data-column="${column}"]`);
+    header.classList.add(`sorted-${regularSeasonTeamPressSortOrder}`);
+    header.dataset.order = regularSeasonTeamPressSortOrder;
+}
+
 // Scrimmage table sorting functions
 let scrimmagesSortColumn = null;
 let scrimmagesSortOrder = 'asc';
@@ -1424,6 +1728,50 @@ function saveToScrimmages() {
     }
 }
 
+// Save current practice data to regular season totals
+function saveToRegularSeason() {
+    if (confirm('Save current practice data to Regular Season totals? This will add current stats to your regular season totals.')) {
+        // Add team stats to regular season totals
+        ['white', 'blue'].forEach(team => {
+            ['paintTouch', 'noPaintTouch'].forEach(category => {
+                regularSeasonStats[team][category].possessions += teamStats[team][category].possessions;
+                regularSeasonStats[team][category].points += teamStats[team][category].points;
+                
+                // Add score breakdowns
+                for (let points = 0; points <= 4; points++) {
+                    regularSeasonStats[team][category].scores[points] += teamStats[team][category].scores[points];
+                }
+            });
+        });
+        
+        // Add player stats to regular season totals
+        Object.keys(playerStats).forEach(playerNum => {
+            ['pressUp', 'atLevel'].forEach(type => {
+                regularSeasonPlayerStats[playerNum][type].positive += playerStats[playerNum][type].positive;
+                regularSeasonPlayerStats[playerNum][type].negative += playerStats[playerNum][type].negative;
+            });
+        });
+        
+        // Save regular season data
+        saveRegularSeasonToLocalStorage();
+        
+        // Update displays
+        updateRegularSeasonStatsDisplay();
+        updateRegularSeasonTeamPressStatsDisplay();
+        
+        // Auto-sync to Google Sheets if enabled
+        console.log('Auto-sync check:', { autoSyncEnabled, googleScriptUrl, hasUrl: !!googleScriptUrl });
+        if (autoSyncEnabled && googleScriptUrl) {
+            console.log('Triggering Google Sheets sync...');
+            saveToGoogleSheets();
+        } else {
+            console.log('Auto-sync skipped - not enabled or no URL');
+        }
+        
+        showStatus('Practice data saved to Regular Season totals! Practice data preserved.');
+    }
+}
+
 // Reset only current practice data (not season totals)
 // Reset only paint touch data (preserve player stats)
 function resetPaintTouchData() {
@@ -1525,6 +1873,39 @@ function resetScrimmageData() {
         updateScrimmageTeamPressStatsDisplay();
         
         showStatus('Scrimmage totals have been cleared!');
+    }
+}
+
+function resetRegularSeasonData() {
+    if (confirm('Clear all Regular Season totals? This will permanently delete all saved Regular Season data but preserve current practice data.')) {
+        // Reset regular season stats
+        regularSeasonStats = {
+            white: {
+                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
+                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+            },
+            blue: {
+                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
+                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+            }
+        };
+        
+        // Reset regular season player stats
+        Object.keys(playerRoster).forEach(playerNum => {
+            regularSeasonPlayerStats[playerNum] = {
+                pressUp: { positive: 0, negative: 0 },
+                atLevel: { positive: 0, negative: 0 }
+            };
+        });
+        
+        // Save cleared data
+        saveRegularSeasonToLocalStorage();
+        
+        // Update displays
+        updateRegularSeasonStatsDisplay();
+        updateRegularSeasonTeamPressStatsDisplay();
+        
+        showStatus('Regular Season totals have been cleared!');
     }
 }
 
@@ -2108,6 +2489,153 @@ function updateScrimmageTeamPressStatsDisplay() {
         </tr>
         <tr class="team-row-overall">
             <td><strong>Season At Level</strong></td>
+            <td><span class="highlight-number">${atLevelPositive}</span></td>
+            <td><span class="highlight-number">${atLevelNegative}</span></td>
+            <td><span class="${getRateClass(atLevelRate)}">${atLevelRate}%</span></td>
+            <td><span class="highlight-number">${atLevelTotal}</span></td>
+        </tr>
+    `;
+    
+    tbody.innerHTML = html;
+}
+
+// Regular Season Display Functions
+function updateRegularSeasonStatsDisplay() {
+    const regularSeasonPercentageTbody = document.getElementById('regular-season-paint-percentage-tbody');
+    if (regularSeasonPercentageTbody) {
+        let html = '';
+        
+        ['white', 'blue'].forEach(team => {
+            const paintTouchPoss = regularSeasonStats[team].paintTouch.possessions;
+            const noPaintTouchPoss = regularSeasonStats[team].noPaintTouch.possessions;
+            const totalPoss = paintTouchPoss + noPaintTouchPoss;
+            
+            const paintTouchPercent = totalPoss > 0 ? ((paintTouchPoss / totalPoss) * 100).toFixed(1) : '0.0';
+            const noPaintTouchPercent = totalPoss > 0 ? ((noPaintTouchPoss / totalPoss) * 100).toFixed(1) : '0.0';
+            
+            const paintTouchPPP = paintTouchPoss > 0 ? (regularSeasonStats[team].paintTouch.points / paintTouchPoss).toFixed(2) : '0.00';
+            const noPaintTouchPPP = noPaintTouchPoss > 0 ? (regularSeasonStats[team].noPaintTouch.points / noPaintTouchPoss).toFixed(2) : '0.00';
+            
+            const paintPercentClass = parseFloat(paintTouchPercent) >= 60 ? 'highlight-good' : parseFloat(paintTouchPercent) <= 40 ? 'highlight-bad' : '';
+            const noPaintPercentClass = parseFloat(noPaintTouchPercent) >= 40 ? 'highlight-bad' : '';
+            const paintPPPClass = parseFloat(paintTouchPPP) >= 1.0 ? 'highlight-good' : parseFloat(paintTouchPPP) < 0.8 ? 'highlight-bad' : '';
+            const noPaintPPPClass = parseFloat(noPaintTouchPPP) >= 1.0 ? 'highlight-good' : parseFloat(noPaintTouchPPP) < 0.8 ? 'highlight-bad' : '';
+            
+            html += `
+            <tr>
+                <td><strong>${team.charAt(0).toUpperCase() + team.slice(1)}</strong></td>
+                <td><span class="highlight-number">${totalPoss}</span></td>
+                <td><span class="highlight-number">${paintTouchPoss}</span></td>
+                <td><span class="${paintPercentClass}">${paintTouchPercent}%</span></td>
+                <td><span class="${paintPPPClass}">${paintTouchPPP}</span></td>
+                <td><span class="highlight-number">${noPaintTouchPoss}</span></td>
+                <td><span class="${noPaintPercentClass}">${noPaintTouchPercent}%</span></td>
+                <td><span class="${noPaintPPPClass}">${noPaintTouchPPP}</span></td>
+            </tr>
+            `;
+        });
+        
+        // Calculate overall stats
+        const overallPaintTouch = regularSeasonStats.white.paintTouch.possessions + regularSeasonStats.blue.paintTouch.possessions;
+        const overallNoPaintTouch = regularSeasonStats.white.noPaintTouch.possessions + regularSeasonStats.blue.noPaintTouch.possessions;
+        const overallTotal = overallPaintTouch + overallNoPaintTouch;
+        
+        const overallPaintTouchPercent = overallTotal > 0 ? ((overallPaintTouch / overallTotal) * 100).toFixed(1) : '0.0';
+        const overallNoPaintTouchPercent = overallTotal > 0 ? ((overallNoPaintTouch / overallTotal) * 100).toFixed(1) : '0.0';
+        
+        const overallPaintTouchPoints = regularSeasonStats.white.paintTouch.points + regularSeasonStats.blue.paintTouch.points;
+        const overallNoPaintTouchPoints = regularSeasonStats.white.noPaintTouch.points + regularSeasonStats.blue.noPaintTouch.points;
+        
+        const overallPaintTouchPPP = overallPaintTouch > 0 ? (overallPaintTouchPoints / overallPaintTouch).toFixed(2) : '0.00';
+        const overallNoPaintTouchPPP = overallNoPaintTouch > 0 ? (overallNoPaintTouchPoints / overallNoPaintTouch).toFixed(2) : '0.00';
+        
+        const overallPaintPercentClass = parseFloat(overallPaintTouchPercent) >= 60 ? 'highlight-good' : parseFloat(overallPaintTouchPercent) <= 40 ? 'highlight-bad' : '';
+        const overallNoPaintPercentClass = parseFloat(overallNoPaintTouchPercent) >= 40 ? 'highlight-bad' : '';
+        const overallPaintPPPClass = parseFloat(overallPaintTouchPPP) >= 1.0 ? 'highlight-good' : parseFloat(overallPaintTouchPPP) < 0.8 ? 'highlight-bad' : '';
+        const overallNoPaintPPPClass = parseFloat(overallNoPaintTouchPPP) >= 1.0 ? 'highlight-good' : parseFloat(overallNoPaintTouchPPP) < 0.8 ? 'highlight-bad' : '';
+        
+        html += `
+            <tr class="team-row-overall">
+                <td><strong>Overall</strong></td>
+                <td><span class="highlight-number">${overallTotal}</span></td>
+                <td><span class="highlight-number">${overallPaintTouch}</span></td>
+                <td><span class="${overallPaintPercentClass}">${overallPaintTouchPercent}%</span></td>
+                <td><span class="${overallPaintPPPClass}">${overallPaintTouchPPP}</span></td>
+                <td><span class="highlight-number">${overallNoPaintTouch}</span></td>
+                <td><span class="${overallNoPaintPercentClass}">${overallNoPaintTouchPercent}%</span></td>
+                <td><span class="${overallNoPaintPPPClass}">${overallNoPaintTouchPPP}</span></td>
+            </tr>
+        `;
+        
+        regularSeasonPercentageTbody.innerHTML = html;
+    }
+    
+    // Update regular season player stats table
+    const regularSeasonPlayerTbody = document.getElementById('regular-season-player-stats-tbody');
+    if (regularSeasonPlayerTbody) {
+        let html = '';
+        
+        Object.keys(playerRoster).forEach(playerNum => {
+            const stats = regularSeasonPlayerStats[playerNum];
+            if (!stats || !stats.pressUp || !stats.atLevel) {
+                return;
+            }
+            const pressUpTotal = stats.pressUp.positive + stats.pressUp.negative;
+            const atLevelTotal = stats.atLevel.positive + stats.atLevel.negative;
+            const pressUpRate = calculateRate(stats.pressUp.positive, stats.pressUp.negative);
+            const atLevelRate = calculateRate(stats.atLevel.positive, stats.atLevel.negative);
+            const totalActions = pressUpTotal + atLevelTotal;
+            
+            html += `
+                <tr>
+                    <td><strong>#${playerNum} ${playerRoster[playerNum]}</strong></td>
+                    <td><span class="highlight-number">${pressUpTotal}</span></td>
+                    <td><span class="${getRateClass(pressUpRate)}">${pressUpRate}%</span></td>
+                    <td><span class="highlight-number">${atLevelTotal}</span></td>
+                    <td><span class="${getRateClass(atLevelRate)}">${atLevelRate}%</span></td>
+                    <td><span class="highlight-number">${totalActions}</span></td>
+                </tr>
+            `;
+        });
+        
+        regularSeasonPlayerTbody.innerHTML = html;
+    }
+}
+
+function updateRegularSeasonTeamPressStatsDisplay() {
+    const tbody = document.getElementById('regular-season-team-press-stats-tbody');
+    if (!tbody) {
+        console.error('regular-season-team-press-stats-tbody not found!');
+        return;
+    }
+    
+    // Calculate regular season team totals
+    let pressUpPositive = 0, pressUpNegative = 0;
+    let atLevelPositive = 0, atLevelNegative = 0;
+    
+    Object.keys(regularSeasonPlayerStats).forEach(playerNum => {
+        const stats = regularSeasonPlayerStats[playerNum];
+        pressUpPositive += stats.pressUp.positive;
+        pressUpNegative += stats.pressUp.negative;
+        atLevelPositive += stats.atLevel.positive;
+        atLevelNegative += stats.atLevel.negative;
+    });
+    
+    const pressUpRate = calculateRate(pressUpPositive, pressUpNegative);
+    const atLevelRate = calculateRate(atLevelPositive, atLevelNegative);
+    const pressUpTotal = pressUpPositive + pressUpNegative;
+    const atLevelTotal = atLevelPositive + atLevelNegative;
+    
+    const html = `
+        <tr class="team-row-overall">
+            <td><strong>Regular Season Press Up</strong></td>
+            <td><span class="highlight-number">${pressUpPositive}</span></td>
+            <td><span class="highlight-number">${pressUpNegative}</span></td>
+            <td><span class="${getRateClass(pressUpRate)}">${pressUpRate}%</span></td>
+            <td><span class="highlight-number">${pressUpTotal}</span></td>
+        </tr>
+        <tr class="team-row-overall">
+            <td><strong>Regular Season At Level</strong></td>
             <td><span class="highlight-number">${atLevelPositive}</span></td>
             <td><span class="highlight-number">${atLevelNegative}</span></td>
             <td><span class="${getRateClass(atLevelRate)}">${atLevelRate}%</span></td>
@@ -2819,6 +3347,9 @@ let autoSyncEnabled = false;
 let actualScrimmageStats = null; // Always stores the real running totals
 let actualScrimmagePlayerStats = null; // Always stores the real player totals
 let isViewingSnapshot = false; // Flag to track if currently viewing a snapshot
+let actualRegularSeasonStats = null; // Always stores the real Regular Season running totals
+let actualRegularSeasonPlayerStats = null; // Always stores the real Regular Season player totals
+let isViewingRegularSeasonSnapshot = false; // Flag to track if viewing Regular Season snapshot
 
 // Manual JSON import function
 function loadJSONData(jsonString) {
@@ -2852,6 +3383,36 @@ function loadJSONData(jsonString) {
     }
 }
 
+function loadRegularSeasonJSONData(jsonString) {
+    try {
+        const data = JSON.parse(jsonString);
+        
+        if (data.regularSeasonStats) {
+            regularSeasonStats = data.regularSeasonStats;
+            regularSeasonPlayerStats = data.regularSeasonPlayerStats || {};
+            
+            console.log('Loaded regularSeasonPlayerStats:', regularSeasonPlayerStats);
+            
+            // Save to localStorage
+            saveRegularSeasonToLocalStorage();
+            
+            // Update displays
+            updateRegularSeasonStatsDisplay();
+            updateRegularSeasonTeamPressStatsDisplay();
+            
+            console.log('Regular Season data loaded');
+            
+            showStatus('Regular Season data loaded successfully!');
+            alert('Regular Season data has been restored from JSON!');
+        } else {
+            showStatus('Invalid JSON format - must contain regularSeasonStats', 'error');
+        }
+    } catch (error) {
+        console.error('Error loading Regular Season JSON:', error);
+        showStatus('Failed to load JSON: ' + error.message, 'error');
+    }
+}
+
 async function saveToGoogleSheets() {
     if (!googleScriptUrl) return;
     
@@ -2859,8 +3420,18 @@ async function saveToGoogleSheets() {
         const data = {
             scrimmageStats: scrimmageStats,
             scrimmagePlayerStats: scrimmagePlayerStats,
+            regularSeasonStats: regularSeasonStats,
+            regularSeasonPlayerStats: regularSeasonPlayerStats,
             timestamp: new Date().toISOString()
         };
+        
+        console.log('Sending to Google Sheets:', {
+            hasScrimmage: !!data.scrimmageStats,
+            hasRegularSeason: !!data.regularSeasonStats,
+            regularSeasonData: data.regularSeasonStats,
+            regularSeasonPlayerData: data.regularSeasonPlayerStats,
+            regularSeasonPlayerDataKeys: Object.keys(data.regularSeasonPlayerStats)
+        });
         
         const response = await fetch(googleScriptUrl, {
             method: 'POST',
@@ -2871,7 +3442,7 @@ async function saveToGoogleSheets() {
             body: JSON.stringify(data)
         });
         
-        console.log('Data synced to Google Sheets');
+        console.log('Data synced to Google Sheets (Tipoff Tourney + Regular Season)');
         return true;
     } catch (error) {
         console.error('Error syncing to Google Sheets:', error);
@@ -2891,13 +3462,30 @@ async function loadFromGoogleSheets() {
             scrimmagePlayerStats = data.scrimmagePlayerStats || {};
             
             updateScrimmageStatsDisplay();
+            updateScrimmageTeamPressStatsDisplay();
             localStorage.setItem(SCRIMMAGE_STORAGE_KEY, JSON.stringify({
                 stats: scrimmageStats,
                 playerStats: scrimmagePlayerStats
             }));
             
-            showStatus('Game data loaded from Google Sheets!');
+            console.log('Tipoff Tourney data loaded from Google Sheets');
         }
+        
+        if (data.regularSeasonStats) {
+            regularSeasonStats = data.regularSeasonStats;
+            regularSeasonPlayerStats = data.regularSeasonPlayerStats || {};
+            
+            updateRegularSeasonStatsDisplay();
+            updateRegularSeasonTeamPressStatsDisplay();
+            localStorage.setItem(REGULAR_SEASON_STORAGE_KEY, JSON.stringify({
+                stats: regularSeasonStats,
+                playerStats: regularSeasonPlayerStats
+            }));
+            
+            console.log('Regular Season data loaded from Google Sheets');
+        }
+        
+        showStatus('Data loaded from Google Sheets (Tipoff Tourney + Regular Season)!');
     } catch (error) {
         console.error('Error loading from Google Sheets:', error);
         showStatus('Failed to load from Google Sheets', 'error');
@@ -2914,7 +3502,42 @@ function saveScriptUrl() {
         autoSyncEnabled = true;
         
         document.getElementById('sync-now-btn').style.display = 'inline-block';
-        showStatus('Google Sheets connected! Your game data will auto-sync.');
+        
+        // Also update Regular Season input
+        const regularSeasonInput = document.getElementById('regular-season-script-url');
+        if (regularSeasonInput) {
+            regularSeasonInput.value = url;
+            document.getElementById('sync-regular-season-now-btn').style.display = 'inline-block';
+        }
+        
+        showStatus('Google Sheets connected! Both tabs will auto-sync.');
+        
+        // Initial sync
+        saveToGoogleSheets();
+    } else {
+        showStatus('Please enter a valid Google Apps Script URL', 'error');
+    }
+}
+
+function saveRegularSeasonScriptUrl() {
+    const input = document.getElementById('regular-season-script-url');
+    const url = input.value.trim();
+    
+    if (url) {
+        googleScriptUrl = url;
+        localStorage.setItem('google-script-url', url);
+        autoSyncEnabled = true;
+        
+        document.getElementById('sync-regular-season-now-btn').style.display = 'inline-block';
+        
+        // Also update Tipoff Tourney input
+        const tipoffInput = document.getElementById('google-script-url');
+        if (tipoffInput) {
+            tipoffInput.value = url;
+            document.getElementById('sync-now-btn').style.display = 'inline-block';
+        }
+        
+        showStatus('Google Sheets connected! Both tabs will auto-sync.');
         
         // Initial sync
         saveToGoogleSheets();
@@ -3136,70 +3759,93 @@ function populateComparisonSelectors() {
     
     if (!startSelector || !endSelector) return;
     
-    const snapshots = getAllSnapshots();
-    snapshots.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp)); // Sort oldest to newest
+    // Get both Tipoff Tourney and Regular Season snapshots
+    const tipoffSnapshots = getAllSnapshots();
+    const regularSeasonSnapshots = getAllRegularSeasonSnapshots();
+    
+    // Combine and sort by timestamp (oldest to newest)
+    const allSnapshots = [
+        ...tipoffSnapshots.map(s => ({...s, source: 'Tipoff Tourney'})),
+        ...regularSeasonSnapshots.map(s => ({...s, source: 'Regular Season'}))
+    ];
+    allSnapshots.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
     
     startSelector.innerHTML = '<option value="">-- Select start snapshot --</option>';
     endSelector.innerHTML = '<option value="">-- Select end snapshot --</option>';
     
-    snapshots.forEach(snapshot => {
+    allSnapshots.forEach(snapshot => {
         const date = new Date(snapshot.timestamp);
         const timeStr = date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
-        const optionText = snapshot.name + ' (' + date.toLocaleDateString() + ' ' + timeStr + ')';
+        const optionText = '[' + snapshot.source + '] ' + snapshot.name + ' (' + date.toLocaleDateString() + ' ' + timeStr + ')';
         
         const startOption = document.createElement('option');
-        startOption.value = snapshot.id;
+        startOption.value = JSON.stringify({id: snapshot.id, source: snapshot.source});
         startOption.textContent = optionText;
         startSelector.appendChild(startOption);
         
         const endOption = document.createElement('option');
-        endOption.value = snapshot.id;
+        endOption.value = JSON.stringify({id: snapshot.id, source: snapshot.source});
         endOption.textContent = optionText;
         endSelector.appendChild(endOption);
     });
 }
 
 function calculateSnapshotComparison() {
-    const startId = document.getElementById('comparison-start-snapshot').value;
-    const endId = document.getElementById('comparison-end-snapshot').value;
+    const startValue = document.getElementById('comparison-start-snapshot').value;
+    const endValue = document.getElementById('comparison-end-snapshot').value;
     
-    if (!startId || !endId) {
+    if (!startValue || !endValue) {
         showStatus('Please select both start and end snapshots', 'error');
         return;
     }
     
-    if (startId === endId) {
+    const startData = JSON.parse(startValue);
+    const endData = JSON.parse(endValue);
+    
+    if (startData.id === endData.id && startData.source === endData.source) {
         showStatus('Please select two different snapshots', 'error');
         return;
     }
     
-    const snapshots = getAllSnapshots();
-    const startSnapshot = snapshots.find(s => s.id === parseInt(startId));
-    const endSnapshot = snapshots.find(s => s.id === parseInt(endId));
+    // Get snapshots from their respective sources
+    const startSnapshots = startData.source === 'Tipoff Tourney' ? getAllSnapshots() : getAllRegularSeasonSnapshots();
+    const endSnapshots = endData.source === 'Tipoff Tourney' ? getAllSnapshots() : getAllRegularSeasonSnapshots();
+    
+    const startSnapshot = startSnapshots.find(s => s.id === startData.id);
+    const endSnapshot = endSnapshots.find(s => s.id === endData.id);
     
     if (!startSnapshot || !endSnapshot) {
         showStatus('Snapshot not found', 'error');
         return;
     }
     
+    // Get the correct data keys based on source
+    const startStatsKey = startData.source === 'Tipoff Tourney' ? 'scrimmageStats' : 'regularSeasonStats';
+    const startPlayerKey = startData.source === 'Tipoff Tourney' ? 'scrimmagePlayerStats' : 'regularSeasonPlayerStats';
+    const endStatsKey = endData.source === 'Tipoff Tourney' ? 'scrimmageStats' : 'regularSeasonStats';
+    const endPlayerKey = endData.source === 'Tipoff Tourney' ? 'scrimmagePlayerStats' : 'regularSeasonPlayerStats';
+    
     // Calculate differences
     const diffStats = {
         white: {
-            paintTouch: subtractStats(endSnapshot.data.scrimmageStats.white.paintTouch, startSnapshot.data.scrimmageStats.white.paintTouch),
-            noPaintTouch: subtractStats(endSnapshot.data.scrimmageStats.white.noPaintTouch, startSnapshot.data.scrimmageStats.white.noPaintTouch)
+            paintTouch: subtractStats(endSnapshot.data[endStatsKey].white.paintTouch, startSnapshot.data[startStatsKey].white.paintTouch),
+            noPaintTouch: subtractStats(endSnapshot.data[endStatsKey].white.noPaintTouch, startSnapshot.data[startStatsKey].white.noPaintTouch)
         },
         blue: {
-            paintTouch: subtractStats(endSnapshot.data.scrimmageStats.blue.paintTouch, startSnapshot.data.scrimmageStats.blue.paintTouch),
-            noPaintTouch: subtractStats(endSnapshot.data.scrimmageStats.blue.noPaintTouch, startSnapshot.data.scrimmageStats.blue.noPaintTouch)
+            paintTouch: subtractStats(endSnapshot.data[endStatsKey].blue.paintTouch, startSnapshot.data[startStatsKey].blue.paintTouch),
+            noPaintTouch: subtractStats(endSnapshot.data[endStatsKey].blue.noPaintTouch, startSnapshot.data[startStatsKey].blue.noPaintTouch)
         }
     };
     
     const diffPlayerStats = {};
-    const allPlayers = new Set([...Object.keys(startSnapshot.data.scrimmagePlayerStats || {}), ...Object.keys(endSnapshot.data.scrimmagePlayerStats || {})]);
+    const allPlayers = new Set([
+        ...Object.keys(startSnapshot.data[startPlayerKey] || {}), 
+        ...Object.keys(endSnapshot.data[endPlayerKey] || {})
+    ]);
     
     allPlayers.forEach(playerNum => {
-        const startPlayer = startSnapshot.data.scrimmagePlayerStats[playerNum] || {pressUp: {positive: 0, negative: 0}, atLevel: {positive: 0, negative: 0}};
-        const endPlayer = endSnapshot.data.scrimmagePlayerStats[playerNum] || {pressUp: {positive: 0, negative: 0}, atLevel: {positive: 0, negative: 0}};
+        const startPlayer = startSnapshot.data[startPlayerKey][playerNum] || {pressUp: {positive: 0, negative: 0}, atLevel: {positive: 0, negative: 0}};
+        const endPlayer = endSnapshot.data[endPlayerKey][playerNum] || {pressUp: {positive: 0, negative: 0}, atLevel: {positive: 0, negative: 0}};
         
         diffPlayerStats[playerNum] = {
             pressUp: {
@@ -3214,7 +3860,8 @@ function calculateSnapshotComparison() {
     });
     
     // Display results
-    displayComparisonResults(diffStats, diffPlayerStats, startSnapshot.name, endSnapshot.name);
+    const displayName = '[' + startData.source + '] ' + startSnapshot.name + ' → [' + endData.source + '] ' + endSnapshot.name;
+    displayComparisonResults(diffStats, diffPlayerStats, '[' + startData.source + '] ' + startSnapshot.name, '[' + endData.source + '] ' + endSnapshot.name);
     
     showStatus('Comparison calculated successfully');
 }
@@ -3376,6 +4023,190 @@ function backToSeasonTotal() {
     // Clear the viewing flag and hide button
     isViewingSnapshot = false;
     const backBtn = document.getElementById('back-to-previous-btn');
+    if (backBtn) {
+        backBtn.style.display = 'none';
+    }
+}
+
+// Regular Season Snapshot Functions
+function createRegularSeasonSnapshot() {
+    const now = new Date();
+    const defaultName = 'Regular Season - ' + now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    const snapshotName = prompt('Enter a name for this snapshot (optional):', defaultName);
+    
+    if (snapshotName === null) return; // User cancelled
+    
+    const snapshot = {
+        id: Date.now(),
+        name: snapshotName || ('Snapshot ' + now.toLocaleDateString()),
+        timestamp: now.toISOString(),
+        type: 'regular-season',
+        data: {
+            regularSeasonStats: JSON.parse(JSON.stringify(regularSeasonStats)),
+            regularSeasonPlayerStats: JSON.parse(JSON.stringify(regularSeasonPlayerStats))
+        }
+    };
+    
+    // Get existing snapshots
+    const snapshots = getAllRegularSeasonSnapshots();
+    snapshots.push(snapshot);
+    
+    // Save to localStorage
+    localStorage.setItem(REGULAR_SEASON_SNAPSHOTS_STORAGE_KEY, JSON.stringify(snapshots));
+    
+    showStatus('Snapshot "' + snapshot.name + '" created successfully!');
+}
+
+function getAllRegularSeasonSnapshots() {
+    const stored = localStorage.getItem(REGULAR_SEASON_SNAPSHOTS_STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+}
+
+function loadRegularSeasonSnapshot(snapshotId) {
+    const snapshots = getAllRegularSeasonSnapshots();
+    const snapshot = snapshots.find(s => s.id === parseInt(snapshotId));
+    
+    if (!snapshot) {
+        showStatus('Snapshot not found', 'error');
+        return;
+    }
+    
+    // Confirm before loading
+    const confirmMsg = 'Load snapshot "' + snapshot.name + '"?\n\n' +
+        'This will show historical data in the Regular Season tab.\n\n' +
+        'Your actual running totals are preserved and new data will always accumulate to them.';
+    if (!confirm(confirmMsg)) {
+        return;
+    }
+    
+    // Save actual running totals if not already saved
+    if (!isViewingRegularSeasonSnapshot) {
+        actualRegularSeasonStats = JSON.parse(JSON.stringify(regularSeasonStats));
+        actualRegularSeasonPlayerStats = JSON.parse(JSON.stringify(regularSeasonPlayerStats));
+    }
+    
+    // Load the snapshot data for DISPLAY ONLY
+    regularSeasonStats = JSON.parse(JSON.stringify(snapshot.data.regularSeasonStats));
+    regularSeasonPlayerStats = JSON.parse(JSON.stringify(snapshot.data.regularSeasonPlayerStats));
+    
+    // Mark that we're viewing a snapshot
+    isViewingRegularSeasonSnapshot = true;
+    
+    // Update displays (but don't save to localStorage)
+    updateRegularSeasonStatsDisplay();
+    updateRegularSeasonTeamPressStatsDisplay();
+    
+    showStatus('Viewing snapshot "' + snapshot.name + '" (running totals preserved)');
+    
+    // Show back to season total button
+    const backBtn = document.getElementById('back-to-regular-season-btn');
+    if (backBtn) {
+        backBtn.style.display = '';
+        backBtn.style.flex = '1';
+    }
+    
+    // Refresh snapshot selector
+    populateRegularSeasonSnapshotSelector();
+    toggleRegularSeasonSnapshotViewer();
+}
+
+function deleteRegularSeasonSnapshot(snapshotId) {
+    const snapshots = getAllRegularSeasonSnapshots();
+    const snapshot = snapshots.find(s => s.id === parseInt(snapshotId));
+    
+    if (!snapshot) {
+        showStatus('Snapshot not found', 'error');
+        return;
+    }
+    
+    if (!confirm('Delete snapshot "' + snapshot.name + '"? This cannot be undone.')) {
+        return;
+    }
+    
+    const filtered = snapshots.filter(s => s.id !== parseInt(snapshotId));
+    localStorage.setItem(REGULAR_SEASON_SNAPSHOTS_STORAGE_KEY, JSON.stringify(filtered));
+    
+    populateRegularSeasonSnapshotSelector();
+    showStatus('Snapshot deleted');
+}
+
+function renameRegularSeasonSnapshot(snapshotId) {
+    const snapshots = getAllRegularSeasonSnapshots();
+    const snapshot = snapshots.find(s => s.id === parseInt(snapshotId));
+    
+    if (!snapshot) {
+        showStatus('Snapshot not found', 'error');
+        return;
+    }
+    
+    const newName = prompt('Enter new name for snapshot:', snapshot.name);
+    if (newName === null || newName.trim() === '') return;
+    
+    snapshot.name = newName.trim();
+    localStorage.setItem(REGULAR_SEASON_SNAPSHOTS_STORAGE_KEY, JSON.stringify(snapshots));
+    
+    populateRegularSeasonSnapshotSelector();
+    showStatus('Snapshot renamed');
+}
+
+function populateRegularSeasonSnapshotSelector() {
+    const selector = document.getElementById('regular-season-snapshot-selector');
+    if (!selector) return;
+    
+    const snapshots = getAllRegularSeasonSnapshots();
+    
+    // Sort by timestamp (newest first)
+    snapshots.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    
+    selector.innerHTML = '<option value="">-- Select a snapshot --</option>';
+    
+    snapshots.forEach(snapshot => {
+        const date = new Date(snapshot.timestamp);
+        const option = document.createElement('option');
+        option.value = snapshot.id;
+        const timeStr = date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+        option.textContent = snapshot.name + ' (' + date.toLocaleDateString() + ' ' + timeStr + ')';
+        selector.appendChild(option);
+    });
+    
+    if (snapshots.length === 0) {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'No snapshots created yet';
+        option.disabled = true;
+        selector.appendChild(option);
+    }
+}
+
+function toggleRegularSeasonSnapshotViewer() {
+    const viewer = document.getElementById('regular-season-snapshot-viewer');
+    if (viewer.style.display === 'none') {
+        viewer.style.display = 'block';
+        populateRegularSeasonSnapshotSelector();
+    } else {
+        viewer.style.display = 'none';
+    }
+}
+
+function backToRegularSeasonTotal() {
+    if (!isViewingRegularSeasonSnapshot || !actualRegularSeasonStats) {
+        showStatus('Already viewing season totals', 'error');
+        return;
+    }
+    
+    // Restore the actual running totals
+    regularSeasonStats = JSON.parse(JSON.stringify(actualRegularSeasonStats));
+    regularSeasonPlayerStats = JSON.parse(JSON.stringify(actualRegularSeasonPlayerStats));
+    
+    // Update displays (but don't save - already in localStorage)
+    updateRegularSeasonStatsDisplay();
+    updateRegularSeasonTeamPressStatsDisplay();
+    
+    showStatus('Restored to Regular Season totals');
+    
+    // Clear the viewing flag and hide button
+    isViewingRegularSeasonSnapshot = false;
+    const backBtn = document.getElementById('back-to-regular-season-btn');
     if (backBtn) {
         backBtn.style.display = 'none';
     }
@@ -3601,6 +4432,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const hasLoadedData = loadFromLocalStorage();
     const hasLoadedSeasonData = loadSeasonFromLocalStorage();
     const hasLoadedScrimmageData = loadScrimmageFromLocalStorage();
+    const hasLoadedRegularSeasonData = loadRegularSeasonFromLocalStorage();
     
     // Initialize actual totals to match loaded scrimmage data
     if (hasLoadedScrimmageData) {
@@ -3622,6 +4454,12 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Starting new season');
     }
     
+    if (hasLoadedRegularSeasonData) {
+        console.log('Regular Season data loaded');
+    } else {
+        console.log('Starting new Regular Season');
+    }
+    
     // Initialize UI
     console.log('Updating stats display and active team display');
     updateStatsDisplay();
@@ -3629,6 +4467,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSeasonStatsDisplay();
     updateScrimmageStatsDisplay();
     updateScrimmageTeamPressStatsDisplay();
+    updateRegularSeasonStatsDisplay();
+    updateRegularSeasonTeamPressStatsDisplay();
     updateUndoButtonVisibility();
     
     // Setup event listeners
@@ -3767,12 +4607,34 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('Reset scrimmage totals button not found!');
     }
+    
+    const saveRegularSeasonBtn = document.getElementById('save-regular-season-btn');
+    if (saveRegularSeasonBtn) {
+        saveRegularSeasonBtn.addEventListener('click', saveToRegularSeason);
+        console.log('Save regular season button event listener attached');
+    } else {
+        console.error('Save regular season button not found!');
+    }
+    
+    const resetRegularSeasonBtn = document.getElementById('reset-regular-season-totals-btn');
+    if (resetRegularSeasonBtn) {
+        resetRegularSeasonBtn.addEventListener('click', resetRegularSeasonData);
+        console.log('Reset regular season totals button event listener attached');
+    } else {
+        console.error('Reset regular season totals button not found!');
+    }
 
     // Google Sheets loaders
     const saveScriptUrlBtn = document.getElementById('save-script-url-btn');
     if (saveScriptUrlBtn) {
         saveScriptUrlBtn.addEventListener('click', saveScriptUrl);
         console.log('Save script URL button event listener attached');
+    }
+    
+    const saveRegularSeasonScriptUrlBtn = document.getElementById('save-regular-season-script-url-btn');
+    if (saveRegularSeasonScriptUrlBtn) {
+        saveRegularSeasonScriptUrlBtn.addEventListener('click', saveRegularSeasonScriptUrl);
+        console.log('Save Regular Season script URL button event listener attached');
     }
 
     const syncNowBtn = document.getElementById('sync-now-btn');
@@ -3782,11 +4644,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         console.log('Sync now button event listener attached');
     }
+    
+    const syncRegularSeasonNowBtn = document.getElementById('sync-regular-season-now-btn');
+    if (syncRegularSeasonNowBtn) {
+        syncRegularSeasonNowBtn.addEventListener('click', () => {
+            loadFromGoogleSheets();
+        });
+        console.log('Sync Regular Season now button event listener attached');
+    }
 
     const setupInstructionsLink = document.getElementById('setup-instructions-link');
     if (setupInstructionsLink) {
         setupInstructionsLink.addEventListener('click', showSetupInstructions);
         console.log('Setup instructions link event listener attached');
+    }
+    
+    const regularSeasonSetupInstructionsLink = document.getElementById('regular-season-setup-instructions-link');
+    if (regularSeasonSetupInstructionsLink) {
+        regularSeasonSetupInstructionsLink.addEventListener('click', showSetupInstructions);
+        console.log('Regular Season setup instructions link event listener attached');
     }
 
     // Snapshot Manager buttons
@@ -3858,6 +4734,70 @@ document.addEventListener('DOMContentLoaded', () => {
         calculateComparisonBtn.addEventListener('click', calculateSnapshotComparison);
         console.log('Calculate comparison button event listener attached');
     }
+    
+    // Regular Season Snapshot Manager buttons
+    const createRegularSeasonSnapshotBtn = document.getElementById('create-regular-season-snapshot-btn');
+    if (createRegularSeasonSnapshotBtn) {
+        createRegularSeasonSnapshotBtn.addEventListener('click', createRegularSeasonSnapshot);
+        console.log('Create Regular Season snapshot button event listener attached');
+    }
+
+    const viewRegularSeasonSnapshotsBtn = document.getElementById('view-regular-season-snapshots-btn');
+    if (viewRegularSeasonSnapshotsBtn) {
+        viewRegularSeasonSnapshotsBtn.addEventListener('click', toggleRegularSeasonSnapshotViewer);
+        console.log('View Regular Season snapshots button event listener attached');
+    }
+
+    const loadRegularSeasonSnapshotBtn = document.getElementById('load-regular-season-snapshot-btn');
+    if (loadRegularSeasonSnapshotBtn) {
+        loadRegularSeasonSnapshotBtn.addEventListener('click', () => {
+            const selector = document.getElementById('regular-season-snapshot-selector');
+            if (selector && selector.value) {
+                loadRegularSeasonSnapshot(selector.value);
+            } else {
+                showStatus('Please select a snapshot to load', 'error');
+            }
+        });
+        console.log('Load Regular Season snapshot button event listener attached');
+    }
+
+    const renameRegularSeasonSnapshotBtn = document.getElementById('rename-regular-season-snapshot-btn');
+    if (renameRegularSeasonSnapshotBtn) {
+        renameRegularSeasonSnapshotBtn.addEventListener('click', () => {
+            const selector = document.getElementById('regular-season-snapshot-selector');
+            if (selector && selector.value) {
+                renameRegularSeasonSnapshot(selector.value);
+            } else {
+                showStatus('Please select a snapshot to rename', 'error');
+            }
+        });
+        console.log('Rename Regular Season snapshot button event listener attached');
+    }
+
+    const deleteRegularSeasonSnapshotBtn = document.getElementById('delete-regular-season-snapshot-btn');
+    if (deleteRegularSeasonSnapshotBtn) {
+        deleteRegularSeasonSnapshotBtn.addEventListener('click', () => {
+            const selector = document.getElementById('regular-season-snapshot-selector');
+            if (selector && selector.value) {
+                deleteRegularSeasonSnapshot(selector.value);
+            } else {
+                showStatus('Please select a snapshot to delete', 'error');
+            }
+        });
+        console.log('Delete Regular Season snapshot button event listener attached');
+    }
+
+    const closeRegularSeasonSnapshotsBtn = document.getElementById('close-regular-season-snapshots-btn');
+    if (closeRegularSeasonSnapshotsBtn) {
+        closeRegularSeasonSnapshotsBtn.addEventListener('click', toggleRegularSeasonSnapshotViewer);
+        console.log('Close Regular Season snapshots button event listener attached');
+    }
+
+    const backToRegularSeasonBtn = document.getElementById('back-to-regular-season-btn');
+    if (backToRegularSeasonBtn) {
+        backToRegularSeasonBtn.addEventListener('click', backToRegularSeasonTotal);
+        console.log('Back to Regular Season total button event listener attached');
+    }
 
     // Load from JSON button
     const loadJsonBtn = document.getElementById('load-json-btn');
@@ -3870,12 +4810,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         console.log('Load JSON button event listener attached');
     }
+    
+    const loadRegularSeasonJsonBtn = document.getElementById('load-regular-season-json-btn');
+    if (loadRegularSeasonJsonBtn) {
+        loadRegularSeasonJsonBtn.addEventListener('click', () => {
+            const jsonInput = prompt('Paste your Regular Season JSON data here:');
+            if (jsonInput) {
+                loadRegularSeasonJSONData(jsonInput);
+            }
+        });
+        console.log('Load Regular Season JSON button event listener attached');
+    }
 
     // Load saved Google Script URL and show sync button if exists
     const savedUrl = localStorage.getItem('google-script-url');
     if (savedUrl) {
         document.getElementById('google-script-url').value = savedUrl;
         document.getElementById('sync-now-btn').style.display = 'inline-block';
+        
+        // Also populate Regular Season field
+        const regularSeasonInput = document.getElementById('regular-season-script-url');
+        if (regularSeasonInput) {
+            regularSeasonInput.value = savedUrl;
+            document.getElementById('sync-regular-season-now-btn').style.display = 'inline-block';
+        }
+        
         autoSyncEnabled = true;
     }
     
@@ -4005,6 +4964,22 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('#season-team-press-stats-table th.sortable').forEach(th => {
         th.style.cursor = 'pointer';
         th.addEventListener('click', () => sortSeasonTeamPressTable(th.dataset.column));
+    });
+    
+    // Regular Season table sorting
+    document.querySelectorAll('#regular-season-paint-percentage-table th.sortable').forEach(th => {
+        th.style.cursor = 'pointer';
+        th.addEventListener('click', () => sortRegularSeasonPaintTable(th.dataset.column));
+    });
+    
+    document.querySelectorAll('#regular-season-player-stats-table th.sortable').forEach(th => {
+        th.style.cursor = 'pointer';
+        th.addEventListener('click', () => sortRegularSeasonPlayerTable(th.dataset.column));
+    });
+    
+    document.querySelectorAll('#regular-season-team-press-stats-table th.sortable').forEach(th => {
+        th.style.cursor = 'pointer';
+        th.addEventListener('click', () => sortRegularSeasonTeamPressTable(th.dataset.column));
     });
     
     // Scrimmage tables

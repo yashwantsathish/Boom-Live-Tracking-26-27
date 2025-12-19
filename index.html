@@ -15,8 +15,8 @@
             <!-- Tab Navigation -->
             <div class="tab-navigation">
                 <button class="tab-btn active" data-tab="current-practice">Current Practice</button>
-                <button class="tab-btn" data-tab="season-totals">TC Totals</button>
-                <button class="tab-btn" data-tab="scrimmage-totals">Game Totals</button>
+                <button class="tab-btn" data-tab="regular-season">Regular Season</button>
+                <button class="tab-btn" data-tab="scrimmage-totals">Tipoff Tourney</button>
                 <button class="tab-btn" data-tab="first-5">First 5</button>
                 <button class="tab-btn" data-tab="snapshot-comparison">📊 Snapshot Comparison</button>
             </div>
@@ -65,8 +65,7 @@
                     <button id="reset-practice-btn" class="reset-btn">Reset Current Practice</button>
                     <button id="quarter-report-btn" class="quarter-report-btn">📊 Quarter Report</button>
                     <button id="half-report-btn" class="half-report-btn">📈 Half Report</button>
-                    <!-- <button id="save-practice-btn" class="save-practice-btn">Save to TC</button> -->
-                    <button id="undo-season-save-btn" class="undo-season-save-btn" style="display: none;">Undo Season Save</button>
+                    <button id="save-regular-season-btn" class="save-scrimmage-btn">Save to Regular Season</button>
                     <button id="save-scrimmage-btn" class="save-scrimmage-btn">Save to Tipoff Tourney</button>
                     <!-- <button id="reset-all-btn" class="reset-all-btn danger-btn">⚠️ DANGER: Reset ALL Season Data</button> -->
                 </div>
@@ -125,7 +124,7 @@
                         <button class="player-btn" data-player="23">#23 Ithiel</button>
                         <button class="player-btn" data-player="29">#29 Jackson</button>
                         <button class="player-btn" data-player="30">#30 McGlothan</button>
-                        <button class="player-btn" data-player="31">#31 Rorie</button>
+                        <button class="player-btn" data-player="31">#31 Taylor</button>
                         <button class="player-btn" data-player="33">#33 El-Sheikh</button>
                         <button class="player-btn" data-player="35">#35 Johnson</button>
                     </div>
@@ -266,21 +265,55 @@
         </section>
         </div>
 
-        <!-- TC Totals Tab -->
-        <div id="season-totals" class="tab-content">
-            <!-- TC Totals Display -->
-            <section class="season-stats-section">
+        <!-- Regular Season Tab -->
+        <div id="regular-season" class="tab-content">
+            <!-- Regular Season Display -->
+            <section class="regular-season-stats-section">
                 <div class="stats-header">
-                    <h3>TC Totals (Cumulative Across All Practices)</h3>
+                    <h3>Regular Season Totals (Cumulative)</h3>
+                    <div class="google-sheets-loader">
+                        <input type="text" id="regular-season-script-url" placeholder="Paste your Google Apps Script URL here (one-time setup)..." class="sheet-url-input">
+                        <button id="save-regular-season-script-url-btn" class="export-btn">💾 Connect to Google Sheets</button>
+                        <button id="sync-regular-season-now-btn" class="export-btn" style="display: none;">🔄 Sync Now</button>
+                    </div>
+                    <div class="export-buttons">
+                        <button id="load-regular-season-json-btn" class="export-btn">📥 Load from JSON</button>
+                        <button id="reset-regular-season-totals-btn" class="reset-scrimmage-totals-btn danger-btn">Clear Regular Season Data</button>
+                    </div>
+                    
+                    <!-- Snapshot Manager -->
+                    <div class="snapshot-manager" style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 2px solid #e1e4e8;">
+                        <h4 style="margin: 0 0 10px 0; color: #24292e;">📸 Historical Snapshots</h4>
+                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                            <button id="create-regular-season-snapshot-btn" class="export-btn" style="flex: 1;">📾 Create Snapshot</button>
+                            <button id="view-regular-season-snapshots-btn" class="export-btn" style="flex: 1;">📋 View Snapshots</button>
+                            <button id="back-to-regular-season-btn" class="export-btn" style="flex: 1; display: none; background: #10b981;">📊 Back to Season Total</button>
+                        </div>
+                        <div id="regular-season-snapshot-viewer" style="display: none; margin-top: 10px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Load Historical Data:</label>
+                            <select id="regular-season-snapshot-selector" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #d1d5da; margin-bottom: 10px;">
+                                <option value="">-- Select a snapshot --</option>
+                            </select>
+                            <div style="display: flex; gap: 10px;">
+                                <button id="load-regular-season-snapshot-btn" class="export-btn" style="flex: 1;">Load Selected</button>
+                                <button id="rename-regular-season-snapshot-btn" class="export-btn" style="flex: 1;">Rename</button>
+                                <button id="delete-regular-season-snapshot-btn" class="danger-btn" style="flex: 1;">Delete Selected</button>
+                                <button id="close-regular-season-snapshots-btn" class="export-btn" style="flex: 0.5;">Close</button>
+                            </div>
+                        </div>
+                        <p style="margin: 10px 0 0 0; font-size: 12px; color: #586069;">💡 Create snapshots to save historical views of your Regular Season data at any point in time</p>
+                    </div>
+                    
                     <div class="season-summary">
-                        <p>This section shows your running totals for the entire season. Use "Save Practice to Season" to add current practice data to these totals.</p>
+                        <p>This section shows your running totals for regular season games. Use "Save to Regular Season" to add current practice data to these totals.</p>
+                        <p><small>💡 <a href="#" id="regular-season-setup-instructions-link" style="color: #667eea; text-decoration: underline;">Click here for Google Sheets auto-sync setup (2 min)</a></small></p>
                     </div>
                 </div>
 
-                <!-- Season Paint Touch Table -->
+                <!-- Regular Season Paint Touch Table -->
                 <div class="table-container">
-                    <h4>Season Paint Touch Analysis</h4>
-                    <table id="season-paint-percentage-table" class="stats-table">
+                    <h4>Regular Season Paint Touch Analysis</h4>
+                    <table id="regular-season-paint-percentage-table" class="stats-table">
                         <thead>
                             <tr>
                                 <th data-column="team" class="sortable">Team</th>
@@ -293,38 +326,36 @@
                                 <th data-column="noPaintPPP" class="sortable">No Paint Touch PPP</th>
                             </tr>
                         </thead>
-                        <tbody id="season-paint-percentage-tbody">
-                            <!-- Season data will be populated here -->
+                        <tbody id="regular-season-paint-percentage-tbody">
+                            <!-- Regular Season data will be populated here -->
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Season Player Stats Table -->
+                <!-- Regular Season Player Stats Table -->
                 <div class="table-container">
-                    <h4>Season Player Analysis</h4>
-                    <table id="season-player-stats-table" class="stats-table">
+                    <h4>Regular Season Player Ballscreen Defense</h4>
+                    <table id="regular-season-player-stats-table" class="stats-table">
                         <thead>
                             <tr>
                                 <th data-column="player" class="sortable">Player</th>
-                                <th data-column="pressUpPos" class="sortable">Press Up +</th>
-                                <th data-column="pressUpNeg" class="sortable">Press Up -</th>
+                                <th data-column="pressUpTotal" class="sortable">Press Up Totals</th>
                                 <th data-column="pressUpRate" class="sortable">Press Up %</th>
-                                <th data-column="atLevelPos" class="sortable">At Level +</th>
-                                <th data-column="atLevelNeg" class="sortable">At Level -</th>
+                                <th data-column="atLevelTotal" class="sortable">At Level Totals</th>
                                 <th data-column="atLevelRate" class="sortable">At Level %</th>
                                 <th data-column="totalActions" class="sortable">Total Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="season-player-stats-tbody">
-                            <!-- Season player data will be populated here -->
+                        <tbody id="regular-season-player-stats-tbody">
+                            <!-- Regular Season player data will be populated here -->
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Season Team Press Stats Table -->
+                <!-- Regular Season Team Press Stats Table -->
                 <div class="table-container">
-                    <h4>Season Team Press/Level Summary</h4>
-                    <table id="season-team-press-stats-table" class="stats-table">
+                    <h4>Regular Season Team Ballscreen Defense</h4>
+                    <table id="regular-season-team-press-stats-table" class="stats-table">
                         <thead>
                             <tr>
                                 <th data-column="category" class="sortable">Category</th>
@@ -334,8 +365,8 @@
                                 <th data-column="totalActions" class="sortable">Total Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="season-team-press-stats-tbody">
-                            <!-- Season team press stats will be populated here -->
+                        <tbody id="regular-season-team-press-stats-tbody">
+                            <!-- Regular Season team press stats will be populated here -->
                         </tbody>
                     </table>
                 </div>
