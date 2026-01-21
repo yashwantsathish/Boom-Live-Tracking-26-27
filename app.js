@@ -3,65 +3,145 @@
 // State management
 let teamStats = {
     white: {
-        paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-        noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+        paintTouch: { 
+            possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        },
+        noPaintTouch: { 
+            possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        }
     },
     blue: {
-        paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-        noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+        paintTouch: { 
+            possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        },
+        noPaintTouch: { 
+            possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        }
     }
 };
 
 // Season-wide cumulative stats
 let seasonStats = {
     white: {
-        paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-        noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+        paintTouch: { 
+            possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        },
+        noPaintTouch: { 
+            possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        }
     },
     blue: {
-        paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-        noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+        paintTouch: { 
+            possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        },
+        noPaintTouch: { 
+            possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        }
     }
 };
 
 // Scrimmage-wide cumulative stats
 let scrimmageStats = {
     white: {
-        paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-        noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+        paintTouch: { 
+            possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        },
+        noPaintTouch: { 
+            possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        }
     },
     blue: {
-        paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-        noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+        paintTouch: { 
+            possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        },
+        noPaintTouch: { 
+            possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        }
     }
 };
 
 // Regular Season cumulative stats
 let regularSeasonStats = {
     white: {
-        paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-        noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+        paintTouch: { 
+            possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        },
+        noPaintTouch: { 
+            possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        }
     },
     blue: {
-        paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-        noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+        paintTouch: { 
+            possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        },
+        noPaintTouch: { 
+            possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        }
     }
 };
 
 // First 5 games historical snapshot (11/16/2024)
 const first5Stats = {
     white: {
-        paintTouch: { possessions: 365, points: 404, scores: { 0: 183, 1: 1, 2: 140, 3: 41, 4: 0 } },
-        noPaintTouch: { possessions: 234, points: 174, scores: { 0: 172, 1: 0, 2: 12, 3: 50, 4: 0 } }
+        paintTouch: { 
+            possessions: 365, points: 404, scores: { 0: 183, 1: 1, 2: 140, 3: 41, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        },
+        noPaintTouch: { 
+            possessions: 234, points: 174, scores: { 0: 172, 1: 0, 2: 12, 3: 50, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        }
     },
     blue: {
-        paintTouch: { possessions: 385, points: 485, scores: { 0: 157, 1: 0, 2: 199, 3: 29, 4: 0 } },
-        noPaintTouch: { possessions: 211, points: 115, scores: { 0: 167, 1: 0, 2: 17, 3: 27, 4: 0 } }
+        paintTouch: { 
+            possessions: 385, points: 485, scores: { 0: 157, 1: 0, 2: 199, 3: 29, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        },
+        noPaintTouch: { 
+            possessions: 211, points: 115, scores: { 0: 167, 1: 0, 2: 17, 3: 27, 4: 0 },
+            hc: { possessions: 0, points: 0 },
+            tr: { possessions: 0, points: 0 }
+        }
     }
 };
 
 const first5PlayerStats = {
-    1: { pressUp: { positive: 37, negative: 28 }, atLevel: { positive: 8, negative: 3 } },
+    1: { pressUp: { positive: 0, negative: 0 }, atLevel: { positive: 0, negative: 0 } },
     2: { pressUp: { positive: 9, negative: 30 }, atLevel: { positive: 8, negative: 3 } },
     3: { pressUp: { positive: 30, negative: 18 }, atLevel: { positive: 6, negative: 1 } },
     11: { pressUp: { positive: 16, negative: 15 }, atLevel: { positive: 0, negative: 1 } },
@@ -75,10 +155,10 @@ let actionHistory = []; // Track all actions for undo
 
 // Player tracking system
 const playerRoster = {
-    0: "Blackshear", 1: "Ashworth", 2: "Guy", 3: "Gordon", 4: "Peter", 5: "Thompson",
+    0: "Blackshear", 1: "Ellis", 2: "Guy", 3: "Gordon", 4: "Peter", 5: "Thompson",
     6: "Hildreth", 7: "Jones", 10: "Dennis", 11: "Felton", 12: "Iraldi",
     13: "Spalding", 15: "Toney", 18: "Slawson", 23: "Ithiel", 29: "Jackson",
-    30: "McGlothan", 31: "Taylor", 33: "El-Sheikh", 35: "Johnson"
+    30: "McGlothan", 31: "Martin", 33: "El-Sheikh", 35: "Johnson"
 };
 
 let playerStats = {};
@@ -164,6 +244,7 @@ function initializePlayerStats() {
 // Hotkey system state
 let activeTeam = 'white'; // Current team being tracked
 let activePaintTouch = true; // true = paint touch, false = no paint touch
+let activeTransitionMode = 'hc'; // 'hc' = halfcourt, 'tr' = transition
 
 // Save data to localStorage
 function saveToLocalStorage() {
@@ -214,6 +295,10 @@ function loadFromLocalStorage() {
         if (saved) {
             const data = JSON.parse(saved);
             teamStats = data.teamStats || teamStats;
+            
+            // Migrate old data to include HC/TR structure
+            migrateTeamStatsStructure(teamStats);
+            
             actionHistory = data.actionHistory || [];
             playerStats = data.playerStats || {};
             playerActionHistory = data.playerActionHistory || [];
@@ -239,6 +324,23 @@ function loadFromLocalStorage() {
     return false;
 }
 
+// Migrate old team stats to include HC/TR structure
+function migrateTeamStatsStructure(stats) {
+    ['white', 'blue'].forEach(team => {
+        ['paintTouch', 'noPaintTouch'].forEach(category => {
+            if (stats[team] && stats[team][category]) {
+                // Add HC/TR structure if it doesn't exist
+                if (!stats[team][category].hc) {
+                    stats[team][category].hc = { possessions: 0, points: 0 };
+                }
+                if (!stats[team][category].tr) {
+                    stats[team][category].tr = { possessions: 0, points: 0 };
+                }
+            }
+        });
+    });
+}
+
 // Load season data from localStorage
 function loadSeasonFromLocalStorage() {
     try {
@@ -246,6 +348,10 @@ function loadSeasonFromLocalStorage() {
         if (saved) {
             const seasonData = JSON.parse(saved);
             seasonStats = seasonData.seasonStats || seasonStats;
+            
+            // Migrate old data to include HC/TR structure
+            migrateTeamStatsStructure(seasonStats);
+            
             seasonPlayerStats = seasonData.seasonPlayerStats || seasonPlayerStats;
             
             // Ensure ALL players in current roster are initialized
@@ -281,7 +387,22 @@ function loadScrimmageFromLocalStorage() {
         if (saved) {
             const scrimmageData = JSON.parse(saved);
             scrimmageStats = scrimmageData.scrimmageStats || scrimmageStats;
+            
+            // Migrate old data to include HC/TR structure
+            migrateTeamStatsStructure(scrimmageStats);
+            
             scrimmagePlayerStats = scrimmageData.scrimmagePlayerStats || scrimmagePlayerStats;
+            
+            // Remove specific players from Tipoff Tourney (Ellis #1, Ithiel #23, Blackshear #0, El-Sheikh #33)
+            const playersToRemove = ['0', '1', '23', '33'];
+            playersToRemove.forEach(playerNum => {
+                if (scrimmagePlayerStats[playerNum]) {
+                    scrimmagePlayerStats[playerNum] = {
+                        pressUp: { positive: 0, negative: 0 },
+                        atLevel: { positive: 0, negative: 0 }
+                    };
+                }
+            });
             
             // Ensure ALL players in current roster are initialized
             Object.keys(playerRoster).forEach(playerNum => {
@@ -330,6 +451,10 @@ function loadRegularSeasonFromLocalStorage() {
         if (saved) {
             const regularSeasonData = JSON.parse(saved);
             regularSeasonStats = regularSeasonData.regularSeasonStats || regularSeasonStats;
+            
+            // Migrate old data to include HC/TR structure
+            migrateTeamStatsStructure(regularSeasonStats);
+            
             regularSeasonPlayerStats = regularSeasonData.regularSeasonPlayerStats || regularSeasonPlayerStats;
             
             // Ensure ALL players in current roster are initialized
@@ -1697,6 +1822,12 @@ function saveToScrimmages() {
                 for (let points = 0; points <= 4; points++) {
                     scrimmageStats[team][category].scores[points] += teamStats[team][category].scores[points];
                 }
+                
+                // Add HC/TR data
+                scrimmageStats[team][category].hc.possessions += teamStats[team][category].hc.possessions;
+                scrimmageStats[team][category].hc.points += teamStats[team][category].hc.points;
+                scrimmageStats[team][category].tr.possessions += teamStats[team][category].tr.possessions;
+                scrimmageStats[team][category].tr.points += teamStats[team][category].tr.points;
             });
         });
         
@@ -1741,6 +1872,12 @@ function saveToRegularSeason() {
                 for (let points = 0; points <= 4; points++) {
                     regularSeasonStats[team][category].scores[points] += teamStats[team][category].scores[points];
                 }
+                
+                // Add HC/TR data
+                regularSeasonStats[team][category].hc.possessions += teamStats[team][category].hc.possessions;
+                regularSeasonStats[team][category].hc.points += teamStats[team][category].hc.points;
+                regularSeasonStats[team][category].tr.possessions += teamStats[team][category].tr.possessions;
+                regularSeasonStats[team][category].tr.points += teamStats[team][category].tr.points;
             });
         });
         
@@ -1778,12 +1915,12 @@ function resetPaintTouchData() {
     if (confirm('Reset paint touch data? This will clear team paint touch stats but preserve player press up/at level data.')) {
         teamStats = {
             white: {
-                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } },
+                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } }
             },
             blue: {
-                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } },
+                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } }
             }
         };
         
@@ -1806,12 +1943,12 @@ function resetPaintTouchData() {
 function resetCurrentPractice() {
     teamStats = {
         white: {
-            paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-            noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+            paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } },
+            noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } }
         },
         blue: {
-            paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-            noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+            paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } },
+            noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } }
         }
     };
     
@@ -1848,12 +1985,12 @@ function resetScrimmageData() {
         // Reset scrimmage stats
         scrimmageStats = {
             white: {
-                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } },
+                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } }
             },
             blue: {
-                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } },
+                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } }
             }
         };
         
@@ -1881,12 +2018,12 @@ function resetRegularSeasonData() {
         // Reset regular season stats
         regularSeasonStats = {
             white: {
-                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } },
+                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } }
             },
             blue: {
-                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } },
+                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } }
             }
         };
         
@@ -1918,11 +2055,16 @@ function addPossession(team, paintTouch, points) {
     teamStats[team][category].points += points;
     teamStats[team][category].scores[points]++;
     
+    // Update HC/TR stats
+    teamStats[team][category][activeTransitionMode].possessions++;
+    teamStats[team][category][activeTransitionMode].points += points;
+    
     // Track action for undo
     const action = {
         team: team,
         paintTouch: paintTouch,
         points: points,
+        transitionMode: activeTransitionMode,
         timestamp: Date.now()
     };
     actionHistory.push(action);
@@ -1932,7 +2074,8 @@ function addPossession(team, paintTouch, points) {
     saveToLocalStorage();
     
     const touchType = paintTouch ? 'with paint touch' : 'without paint touch';
-    showStatus(`${team} team: ${points} points ${touchType}`);
+    const transModeText = activeTransitionMode === 'hc' ? 'HC' : 'TR';
+    showStatus(`${team} team: ${points} points ${touchType} (${transModeText})`);
 }
 
 // Undo last action
@@ -1949,6 +2092,12 @@ function undoLastAction() {
     teamStats[lastAction.team][category].possessions--;
     teamStats[lastAction.team][category].points -= lastAction.points;
     teamStats[lastAction.team][category].scores[lastAction.points]--;
+    
+    // Reverse HC/TR stats (handle legacy actions that don't have transitionMode)
+    if (lastAction.transitionMode) {
+        teamStats[lastAction.team][category][lastAction.transitionMode].possessions--;
+        teamStats[lastAction.team][category][lastAction.transitionMode].points -= lastAction.points;
+    }
     
     updateStatsDisplay();
     updateActiveTeamDisplay();
@@ -1987,12 +2136,22 @@ function updateActiveTeamDisplay() {
         }
     });
     
+    // Update transition mode buttons
+    document.querySelectorAll('.transition-toggle').forEach(btn => {
+        if (btn.classList.contains('hc-mode')) {
+            btn.classList.toggle('active', activeTransitionMode === 'hc');
+        } else if (btn.classList.contains('tr-mode')) {
+            btn.classList.toggle('active', activeTransitionMode === 'tr');
+        }
+    });
+    
     // Update status display
     const statusEl = document.getElementById('current-status');
     if (statusEl) {
         const teamName = activeTeam.charAt(0).toUpperCase() + activeTeam.slice(1);
         const mode = activePaintTouch ? 'Paint Touch' : 'No Paint Touch';
-        statusEl.innerHTML = `<strong>Active Team:</strong> ${teamName} | <strong>Mode:</strong> ${mode}`;
+        const transMode = activeTransitionMode === 'hc' ? 'HC' : 'TR';
+        statusEl.innerHTML = `<strong>Active Team:</strong> ${teamName} | <strong>Mode:</strong> ${mode} | <strong>Transition:</strong> ${transMode}`;
     }
 }
 
@@ -2057,6 +2216,17 @@ function updateStatsDisplay() {
             const paintTouchPPP = paintTouchPoss > 0 ? (teamStats[team].paintTouch.points / paintTouchPoss).toFixed(2) : '0.00';
             const noPaintTouchPPP = noPaintTouchPoss > 0 ? (teamStats[team].noPaintTouch.points / noPaintTouchPoss).toFixed(2) : '0.00';
             
+            // Calculate HC/TR stats
+            const hcPoss = teamStats[team].paintTouch.hc.possessions + teamStats[team].noPaintTouch.hc.possessions;
+            const trPoss = teamStats[team].paintTouch.tr.possessions + teamStats[team].noPaintTouch.tr.possessions;
+            const hcPoints = teamStats[team].paintTouch.hc.points + teamStats[team].noPaintTouch.hc.points;
+            const trPoints = teamStats[team].paintTouch.tr.points + teamStats[team].noPaintTouch.tr.points;
+            
+            const trackedPoss = hcPoss + trPoss;
+            const trPercent = trackedPoss > 0 ? ((trPoss / trackedPoss) * 100).toFixed(1) : '0.0';
+            const hcPPP = hcPoss > 0 ? (hcPoints / hcPoss).toFixed(2) : '0.00';
+            const trPPP = trPoss > 0 ? (trPoints / trPoss).toFixed(2) : '0.00';
+            
             // Determine percentage styling classes
             const paintPercentClass = parseFloat(paintTouchPercent) >= 70 ? 'percentage-high' : 
                                     parseFloat(paintTouchPercent) >= 40 ? 'percentage-medium' : 'percentage-low';
@@ -2068,6 +2238,13 @@ function updateStatsDisplay() {
                                  parseFloat(paintTouchPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
             const noPaintPPPClass = parseFloat(noPaintTouchPPP) >= 1.5 ? 'percentage-high' : 
                                    parseFloat(noPaintTouchPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
+            const hcPPPClass = parseFloat(hcPPP) >= 1.5 ? 'percentage-high' : 
+                              parseFloat(hcPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
+            const trPPPClass = parseFloat(trPPP) >= 1.5 ? 'percentage-high' : 
+                              parseFloat(trPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
+            
+            // TR % styling (no specific threshold, just display)
+            const trPercentClass = 'highlight-number';
             
             html += `
                 <tr class="team-row-${team}">
@@ -2079,6 +2256,9 @@ function updateStatsDisplay() {
                     <td><span class="highlight-number">${noPaintTouchPoss}</span></td>
                     <td><span class="${noPaintPercentClass}">${noPaintTouchPercent}%</span></td>
                     <td><span class="${noPaintPPPClass}">${noPaintTouchPPP}</span></td>
+                    <td><span class="${trPercentClass}">${trPercent}%</span></td>
+                    <td><span class="${hcPPPClass}">${hcPPP}</span></td>
+                    <td><span class="${trPPPClass}">${trPPP}</span></td>
                 </tr>
             `;
         });
@@ -2097,6 +2277,21 @@ function updateStatsDisplay() {
         const overallPaintTouchPPP = overallPaintTouchPoss > 0 ? (overallPaintTouchPoints / overallPaintTouchPoss).toFixed(2) : '0.00';
         const overallNoPaintTouchPPP = overallNoPaintTouchPoss > 0 ? (overallNoPaintTouchPoints / overallNoPaintTouchPoss).toFixed(2) : '0.00';
         
+        // Calculate overall HC/TR stats
+        const overallHcPoss = teamStats.white.paintTouch.hc.possessions + teamStats.white.noPaintTouch.hc.possessions +
+                             teamStats.blue.paintTouch.hc.possessions + teamStats.blue.noPaintTouch.hc.possessions;
+        const overallTrPoss = teamStats.white.paintTouch.tr.possessions + teamStats.white.noPaintTouch.tr.possessions +
+                             teamStats.blue.paintTouch.tr.possessions + teamStats.blue.noPaintTouch.tr.possessions;
+        const overallHcPoints = teamStats.white.paintTouch.hc.points + teamStats.white.noPaintTouch.hc.points +
+                               teamStats.blue.paintTouch.hc.points + teamStats.blue.noPaintTouch.hc.points;
+        const overallTrPoints = teamStats.white.paintTouch.tr.points + teamStats.white.noPaintTouch.tr.points +
+                               teamStats.blue.paintTouch.tr.points + teamStats.blue.noPaintTouch.tr.points;
+        
+        const overallTrackedPoss = overallHcPoss + overallTrPoss;
+        const overallTrPercent = overallTrackedPoss > 0 ? ((overallTrPoss / overallTrackedPoss) * 100).toFixed(1) : '0.0';
+        const overallHcPPP = overallHcPoss > 0 ? (overallHcPoints / overallHcPoss).toFixed(2) : '0.00';
+        const overallTrPPP = overallTrPoss > 0 ? (overallTrPoints / overallTrPoss).toFixed(2) : '0.00';
+        
         // Styling for overall row
         const overallPaintPercentClass = parseFloat(overallPaintTouchPercent) >= 70 ? 'percentage-high' : 
                                         parseFloat(overallPaintTouchPercent) >= 40 ? 'percentage-medium' : 'percentage-low';
@@ -2106,6 +2301,10 @@ function updateStatsDisplay() {
                                     parseFloat(overallPaintTouchPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
         const overallNoPaintPPPClass = parseFloat(overallNoPaintTouchPPP) >= 1.5 ? 'percentage-high' : 
                                       parseFloat(overallNoPaintTouchPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
+        const overallHcPPPClass = parseFloat(overallHcPPP) >= 1.5 ? 'percentage-high' : 
+                                 parseFloat(overallHcPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
+        const overallTrPPPClass = parseFloat(overallTrPPP) >= 1.5 ? 'percentage-high' : 
+                                 parseFloat(overallTrPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
         
         html += `
             <tr class="team-row-overall">
@@ -2117,6 +2316,9 @@ function updateStatsDisplay() {
                 <td><span class="highlight-number">${overallNoPaintTouchPoss}</span></td>
                 <td><span class="${overallNoPaintPercentClass}">${overallNoPaintTouchPercent}%</span></td>
                 <td><span class="${overallNoPaintPPPClass}">${overallNoPaintTouchPPP}</span></td>
+                <td><span class="highlight-number">${overallTrPercent}%</span></td>
+                <td><span class="${overallHcPPPClass}">${overallHcPPP}</span></td>
+                <td><span class="${overallTrPPPClass}">${overallTrPPP}</span></td>
             </tr>
         `;
         
@@ -2150,6 +2352,107 @@ function updateStatsDisplay() {
         
         scoringTbody.innerHTML = html;
     }
+    
+    // Update HC/TR breakdown table
+    updateHCTRBreakdown(teamStats, 'hc-tr-breakdown-tbody');
+}
+
+function updateHCTRBreakdown(stats, tbodyId) {
+    const tbody = document.getElementById(tbodyId);
+    if (!tbody) return;
+    
+    let html = '';
+    
+    ['white', 'blue'].forEach(team => {
+        // Calculate total paint touches for this team across HC and TR
+        const totalTeamPaintTouches = stats[team].paintTouch.hc.possessions + stats[team].paintTouch.tr.possessions;
+        
+        ['hc', 'tr'].forEach(mode => {
+            const modeName = mode === 'hc' ? 'HC' : 'TR';
+            const paintPoss = stats[team].paintTouch[mode].possessions;
+            const noPaintPoss = stats[team].noPaintTouch[mode].possessions;
+            const totalPoss = paintPoss + noPaintPoss;
+            
+            if (totalPoss === 0) return; // Skip if no data for this mode
+            
+            // Calculate PT% (percentage of total paint touches)
+            const ptPercent = totalTeamPaintTouches > 0 ? ((paintPoss / totalTeamPaintTouches) * 100).toFixed(1) : '0.0';
+            
+            const paintPercent = totalPoss > 0 ? ((paintPoss / totalPoss) * 100).toFixed(1) : '0.0';
+            const noPaintPercent = totalPoss > 0 ? ((noPaintPoss / totalPoss) * 100).toFixed(1) : '0.0';
+            
+            const paintPoints = stats[team].paintTouch[mode].points;
+            const noPaintPoints = stats[team].noPaintTouch[mode].points;
+            const paintPPP = paintPoss > 0 ? (paintPoints / paintPoss).toFixed(2) : '0.00';
+            const noPaintPPP = noPaintPoss > 0 ? (noPaintPoints / noPaintPoss).toFixed(2) : '0.00';
+            
+            const paintPercentClass = parseFloat(paintPercent) >= 70 ? 'percentage-high' : 
+                                     parseFloat(paintPercent) >= 40 ? 'percentage-medium' : 'percentage-low';
+            const noPaintPercentClass = parseFloat(noPaintPercent) >= 70 ? 'percentage-high' : 
+                                       parseFloat(noPaintPercent) >= 40 ? 'percentage-medium' : 'percentage-low';
+            const paintPPPClass = parseFloat(paintPPP) >= 1.5 ? 'percentage-high' : 
+                                 parseFloat(paintPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
+            const noPaintPPPClass = parseFloat(noPaintPPP) >= 1.5 ? 'percentage-high' : 
+                                   parseFloat(noPaintPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
+            
+            html += `
+                <tr class="team-row-${team}">
+                    <td><strong>${team.charAt(0).toUpperCase() + team.slice(1)}</strong></td>
+                    <td><strong>${modeName}</strong></td>
+                    <td><span class="highlight-number">${totalPoss}</span></td>
+                    <td><span class="highlight-number">${paintPoss}</span></td>
+                    <td><span class="highlight-number">${ptPercent}%</span></td>
+                    <td><span class="${paintPercentClass}">${paintPercent}%</span></td>
+                    <td><span class="${paintPPPClass}">${paintPPP}</span></td>
+                    <td><span class="highlight-number">${noPaintPoss}</span></td>
+                    <td><span class="${noPaintPercentClass}">${noPaintPercent}%</span></td>
+                    <td><span class="${noPaintPPPClass}">${noPaintPPP}</span></td>
+                </tr>
+            `;
+        });
+    });
+    
+    // Add overall HC and TR rows
+    // Calculate total overall paint touches for PT%
+    const totalOverallPaintTouches = stats.white.paintTouch.hc.possessions + stats.white.paintTouch.tr.possessions +
+                                     stats.blue.paintTouch.hc.possessions + stats.blue.paintTouch.tr.possessions;
+    
+    ['hc', 'tr'].forEach(mode => {
+        const modeName = mode === 'hc' ? 'HC' : 'TR';
+        const paintPoss = stats.white.paintTouch[mode].possessions + stats.blue.paintTouch[mode].possessions;
+        const noPaintPoss = stats.white.noPaintTouch[mode].possessions + stats.blue.noPaintTouch[mode].possessions;
+        const totalPoss = paintPoss + noPaintPoss;
+        
+        if (totalPoss === 0) return; // Skip if no data
+        
+        // Calculate PT% for overall
+        const ptPercent = totalOverallPaintTouches > 0 ? ((paintPoss / totalOverallPaintTouches) * 100).toFixed(1) : '0.0';
+        
+        const paintPercent = totalPoss > 0 ? ((paintPoss / totalPoss) * 100).toFixed(1) : '0.0';
+        const noPaintPercent = totalPoss > 0 ? ((noPaintPoss / totalPoss) * 100).toFixed(1) : '0.0';
+        
+        const paintPoints = stats.white.paintTouch[mode].points + stats.blue.paintTouch[mode].points;
+        const noPaintPoints = stats.white.noPaintTouch[mode].points + stats.blue.noPaintTouch[mode].points;
+        const paintPPP = paintPoss > 0 ? (paintPoints / paintPoss).toFixed(2) : '0.00';
+        const noPaintPPP = noPaintPoss > 0 ? (noPaintPoints / noPaintPoss).toFixed(2) : '0.00';
+        
+        html += `
+            <tr class="team-row-overall">
+                <td><strong>OVERALL</strong></td>
+                <td><strong>${modeName}</strong></td>
+                <td><span class="highlight-number">${totalPoss}</span></td>
+                <td><span class="highlight-number">${paintPoss}</span></td>
+                <td><span class="highlight-number">${ptPercent}%</span></td>
+                <td><span class="highlight-number">${paintPercent}%</span></td>
+                <td><span class="highlight-number">${paintPPP}</span></td>
+                <td><span class="highlight-number">${noPaintPoss}</span></td>
+                <td><span class="highlight-number">${noPaintPercent}%</span></td>
+                <td><span class="highlight-number">${noPaintPPP}</span></td>
+            </tr>
+        `;
+    });
+    
+    tbody.innerHTML = html;
 }
 
 // Keyboard event handler
@@ -2352,6 +2655,17 @@ function updateScrimmageStatsDisplay() {
             const paintTouchPPP = paintTouchPoss > 0 ? (scrimmageStats[team].paintTouch.points / paintTouchPoss).toFixed(2) : '0.00';
             const noPaintTouchPPP = noPaintTouchPoss > 0 ? (scrimmageStats[team].noPaintTouch.points / noPaintTouchPoss).toFixed(2) : '0.00';
             
+            // Calculate HC/TR stats
+            const hcPoss = scrimmageStats[team].paintTouch.hc.possessions + scrimmageStats[team].noPaintTouch.hc.possessions;
+            const trPoss = scrimmageStats[team].paintTouch.tr.possessions + scrimmageStats[team].noPaintTouch.tr.possessions;
+            const hcPoints = scrimmageStats[team].paintTouch.hc.points + scrimmageStats[team].noPaintTouch.hc.points;
+            const trPoints = scrimmageStats[team].paintTouch.tr.points + scrimmageStats[team].noPaintTouch.tr.points;
+            
+            const trackedPoss = hcPoss + trPoss;
+            const trPercent = trackedPoss > 0 ? ((trPoss / trackedPoss) * 100).toFixed(1) : '0.0';
+            const hcPPP = hcPoss > 0 ? (hcPoints / hcPoss).toFixed(2) : '0.00';
+            const trPPP = trPoss > 0 ? (trPoints / trPoss).toFixed(2) : '0.00';
+            
             // Determine percentage styling classes
             const paintPercentClass = parseFloat(paintTouchPercent) >= 70 ? 'percentage-high' : 
                                     parseFloat(paintTouchPercent) >= 40 ? 'percentage-medium' : 'percentage-low';
@@ -2363,6 +2677,10 @@ function updateScrimmageStatsDisplay() {
                                  parseFloat(paintTouchPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
             const noPaintPPPClass = parseFloat(noPaintTouchPPP) >= 1.5 ? 'percentage-high' : 
                                    parseFloat(noPaintTouchPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
+            const hcPPPClass = parseFloat(hcPPP) >= 1.5 ? 'percentage-high' : 
+                              parseFloat(hcPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
+            const trPPPClass = parseFloat(trPPP) >= 1.5 ? 'percentage-high' : 
+                              parseFloat(trPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
             
             html += `
                 <tr class="team-row-${team}">
@@ -2374,6 +2692,9 @@ function updateScrimmageStatsDisplay() {
                     <td><span class="highlight-number">${noPaintTouchPoss}</span></td>
                     <td><span class="${noPaintPercentClass}">${noPaintTouchPercent}%</span></td>
                     <td><span class="${noPaintPPPClass}">${noPaintTouchPPP}</span></td>
+                    <td><span class="highlight-number">${trPercent}%</span></td>
+                    <td><span class="${hcPPPClass}">${hcPPP}</span></td>
+                    <td><span class="${trPPPClass}">${trPPP}</span></td>
                 </tr>
             `;
         });
@@ -2392,6 +2713,21 @@ function updateScrimmageStatsDisplay() {
         const overallPaintTouchPPP = overallPaintTouchPoss > 0 ? (overallPaintTouchPoints / overallPaintTouchPoss).toFixed(2) : '0.00';
         const overallNoPaintTouchPPP = overallNoPaintTouchPoss > 0 ? (overallNoPaintTouchPoints / overallNoPaintTouchPoss).toFixed(2) : '0.00';
         
+        // Calculate overall HC/TR stats
+        const overallHcPoss = scrimmageStats.white.paintTouch.hc.possessions + scrimmageStats.white.noPaintTouch.hc.possessions +
+                             scrimmageStats.blue.paintTouch.hc.possessions + scrimmageStats.blue.noPaintTouch.hc.possessions;
+        const overallTrPoss = scrimmageStats.white.paintTouch.tr.possessions + scrimmageStats.white.noPaintTouch.tr.possessions +
+                             scrimmageStats.blue.paintTouch.tr.possessions + scrimmageStats.blue.noPaintTouch.tr.possessions;
+        const overallHcPoints = scrimmageStats.white.paintTouch.hc.points + scrimmageStats.white.noPaintTouch.hc.points +
+                               scrimmageStats.blue.paintTouch.hc.points + scrimmageStats.blue.noPaintTouch.hc.points;
+        const overallTrPoints = scrimmageStats.white.paintTouch.tr.points + scrimmageStats.white.noPaintTouch.tr.points +
+                               scrimmageStats.blue.paintTouch.tr.points + scrimmageStats.blue.noPaintTouch.tr.points;
+        
+        const overallTrackedPoss = overallHcPoss + overallTrPoss;
+        const overallTrPercent = overallTrackedPoss > 0 ? ((overallTrPoss / overallTrackedPoss) * 100).toFixed(1) : '0.0';
+        const overallHcPPP = overallHcPoss > 0 ? (overallHcPoints / overallHcPoss).toFixed(2) : '0.00';
+        const overallTrPPP = overallTrPoss > 0 ? (overallTrPoints / overallTrPoss).toFixed(2) : '0.00';
+        
         // Styling for overall row
         const overallPaintPercentClass = parseFloat(overallPaintTouchPercent) >= 70 ? 'percentage-high' : 
                                         parseFloat(overallPaintTouchPercent) >= 40 ? 'percentage-medium' : 'percentage-low';
@@ -2401,6 +2737,10 @@ function updateScrimmageStatsDisplay() {
                                     parseFloat(overallPaintTouchPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
         const overallNoPaintPPPClass = parseFloat(overallNoPaintTouchPPP) >= 1.5 ? 'percentage-high' : 
                                       parseFloat(overallNoPaintTouchPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
+        const overallHcPPPClass = parseFloat(overallHcPPP) >= 1.5 ? 'percentage-high' : 
+                                 parseFloat(overallHcPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
+        const overallTrPPPClass = parseFloat(overallTrPPP) >= 1.5 ? 'percentage-high' : 
+                                 parseFloat(overallTrPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
         
         html += `
             <tr class="team-row-overall">
@@ -2412,18 +2752,32 @@ function updateScrimmageStatsDisplay() {
                 <td><span class="highlight-number">${overallNoPaintTouchPoss}</span></td>
                 <td><span class="${overallNoPaintPercentClass}">${overallNoPaintTouchPercent}%</span></td>
                 <td><span class="${overallNoPaintPPPClass}">${overallNoPaintTouchPPP}</span></td>
+                <td><span class="highlight-number">${overallTrPercent}%</span></td>
+                <td><span class="${overallHcPPPClass}">${overallHcPPP}</span></td>
+                <td><span class="${overallTrPPPClass}">${overallTrPPP}</span></td>
             </tr>
         `;
         
         scrimmagePercentageTbody.innerHTML = html;
     }
     
+    // Update HC/TR breakdown table
+    updateHCTRBreakdown(scrimmageStats, 'scrimmage-hc-tr-breakdown-tbody');
+    
     // Update scrimmage player stats table
     const scrimmagePlayerTbody = document.getElementById('scrimmage-player-stats-tbody');
     if (scrimmagePlayerTbody) {
         let html = '';
         
+        // Players to exclude from Tipoff Tourney display
+        const excludedPlayers = ['0', '1', '23', '33'];
+        
         Object.keys(playerRoster).forEach(playerNum => {
+            // Skip excluded players (Ellis #1, Ithiel #23, Blackshear #0, El-Sheikh #33)
+            if (excludedPlayers.includes(playerNum)) {
+                return;
+            }
+            
             const stats = scrimmagePlayerStats[playerNum];
             // Skip if player data doesn't exist in this snapshot
             if (!stats || !stats.pressUp || !stats.atLevel) {
@@ -2516,10 +2870,23 @@ function updateRegularSeasonStatsDisplay() {
             const paintTouchPPP = paintTouchPoss > 0 ? (regularSeasonStats[team].paintTouch.points / paintTouchPoss).toFixed(2) : '0.00';
             const noPaintTouchPPP = noPaintTouchPoss > 0 ? (regularSeasonStats[team].noPaintTouch.points / noPaintTouchPoss).toFixed(2) : '0.00';
             
+            // Calculate HC/TR stats
+            const hcPoss = regularSeasonStats[team].paintTouch.hc.possessions + regularSeasonStats[team].noPaintTouch.hc.possessions;
+            const trPoss = regularSeasonStats[team].paintTouch.tr.possessions + regularSeasonStats[team].noPaintTouch.tr.possessions;
+            const hcPoints = regularSeasonStats[team].paintTouch.hc.points + regularSeasonStats[team].noPaintTouch.hc.points;
+            const trPoints = regularSeasonStats[team].paintTouch.tr.points + regularSeasonStats[team].noPaintTouch.tr.points;
+            
+            const trackedPoss = hcPoss + trPoss;
+            const trPercent = trackedPoss > 0 ? ((trPoss / trackedPoss) * 100).toFixed(1) : '0.0';
+            const hcPPP = hcPoss > 0 ? (hcPoints / hcPoss).toFixed(2) : '0.00';
+            const trPPP = trPoss > 0 ? (trPoints / trPoss).toFixed(2) : '0.00';
+            
             const paintPercentClass = parseFloat(paintTouchPercent) >= 60 ? 'highlight-good' : parseFloat(paintTouchPercent) <= 40 ? 'highlight-bad' : '';
             const noPaintPercentClass = parseFloat(noPaintTouchPercent) >= 40 ? 'highlight-bad' : '';
             const paintPPPClass = parseFloat(paintTouchPPP) >= 1.0 ? 'highlight-good' : parseFloat(paintTouchPPP) < 0.8 ? 'highlight-bad' : '';
             const noPaintPPPClass = parseFloat(noPaintTouchPPP) >= 1.0 ? 'highlight-good' : parseFloat(noPaintTouchPPP) < 0.8 ? 'highlight-bad' : '';
+            const hcPPPClass = parseFloat(hcPPP) >= 1.0 ? 'highlight-good' : parseFloat(hcPPP) < 0.8 ? 'highlight-bad' : '';
+            const trPPPClass = parseFloat(trPPP) >= 1.0 ? 'highlight-good' : parseFloat(trPPP) < 0.8 ? 'highlight-bad' : '';
             
             html += `
             <tr>
@@ -2531,6 +2898,9 @@ function updateRegularSeasonStatsDisplay() {
                 <td><span class="highlight-number">${noPaintTouchPoss}</span></td>
                 <td><span class="${noPaintPercentClass}">${noPaintTouchPercent}%</span></td>
                 <td><span class="${noPaintPPPClass}">${noPaintTouchPPP}</span></td>
+                <td><span class="highlight-number">${trPercent}%</span></td>
+                <td><span class="${hcPPPClass}">${hcPPP}</span></td>
+                <td><span class="${trPPPClass}">${trPPP}</span></td>
             </tr>
             `;
         });
@@ -2549,10 +2919,27 @@ function updateRegularSeasonStatsDisplay() {
         const overallPaintTouchPPP = overallPaintTouch > 0 ? (overallPaintTouchPoints / overallPaintTouch).toFixed(2) : '0.00';
         const overallNoPaintTouchPPP = overallNoPaintTouch > 0 ? (overallNoPaintTouchPoints / overallNoPaintTouch).toFixed(2) : '0.00';
         
+        // Calculate overall HC/TR stats
+        const overallHcPoss = regularSeasonStats.white.paintTouch.hc.possessions + regularSeasonStats.white.noPaintTouch.hc.possessions +
+                             regularSeasonStats.blue.paintTouch.hc.possessions + regularSeasonStats.blue.noPaintTouch.hc.possessions;
+        const overallTrPoss = regularSeasonStats.white.paintTouch.tr.possessions + regularSeasonStats.white.noPaintTouch.tr.possessions +
+                             regularSeasonStats.blue.paintTouch.tr.possessions + regularSeasonStats.blue.noPaintTouch.tr.possessions;
+        const overallHcPoints = regularSeasonStats.white.paintTouch.hc.points + regularSeasonStats.white.noPaintTouch.hc.points +
+                               regularSeasonStats.blue.paintTouch.hc.points + regularSeasonStats.blue.noPaintTouch.hc.points;
+        const overallTrPoints = regularSeasonStats.white.paintTouch.tr.points + regularSeasonStats.white.noPaintTouch.tr.points +
+                               regularSeasonStats.blue.paintTouch.tr.points + regularSeasonStats.blue.noPaintTouch.tr.points;
+        
+        const overallTrackedPoss = overallHcPoss + overallTrPoss;
+        const overallTrPercent = overallTrackedPoss > 0 ? ((overallTrPoss / overallTrackedPoss) * 100).toFixed(1) : '0.0';
+        const overallHcPPP = overallHcPoss > 0 ? (overallHcPoints / overallHcPoss).toFixed(2) : '0.00';
+        const overallTrPPP = overallTrPoss > 0 ? (overallTrPoints / overallTrPoss).toFixed(2) : '0.00';
+        
         const overallPaintPercentClass = parseFloat(overallPaintTouchPercent) >= 60 ? 'highlight-good' : parseFloat(overallPaintTouchPercent) <= 40 ? 'highlight-bad' : '';
         const overallNoPaintPercentClass = parseFloat(overallNoPaintTouchPercent) >= 40 ? 'highlight-bad' : '';
         const overallPaintPPPClass = parseFloat(overallPaintTouchPPP) >= 1.0 ? 'highlight-good' : parseFloat(overallPaintTouchPPP) < 0.8 ? 'highlight-bad' : '';
         const overallNoPaintPPPClass = parseFloat(overallNoPaintTouchPPP) >= 1.0 ? 'highlight-good' : parseFloat(overallNoPaintTouchPPP) < 0.8 ? 'highlight-bad' : '';
+        const overallHcPPPClass = parseFloat(overallHcPPP) >= 1.0 ? 'highlight-good' : parseFloat(overallHcPPP) < 0.8 ? 'highlight-bad' : '';
+        const overallTrPPPClass = parseFloat(overallTrPPP) >= 1.0 ? 'highlight-good' : parseFloat(overallTrPPP) < 0.8 ? 'highlight-bad' : '';
         
         html += `
             <tr class="team-row-overall">
@@ -2564,18 +2951,32 @@ function updateRegularSeasonStatsDisplay() {
                 <td><span class="highlight-number">${overallNoPaintTouch}</span></td>
                 <td><span class="${overallNoPaintPercentClass}">${overallNoPaintTouchPercent}%</span></td>
                 <td><span class="${overallNoPaintPPPClass}">${overallNoPaintTouchPPP}</span></td>
+                <td><span class="highlight-number">${overallTrPercent}%</span></td>
+                <td><span class="${overallHcPPPClass}">${overallHcPPP}</span></td>
+                <td><span class="${overallTrPPPClass}">${overallTrPPP}</span></td>
             </tr>
         `;
         
         regularSeasonPercentageTbody.innerHTML = html;
     }
     
+    // Update HC/TR breakdown table
+    updateHCTRBreakdown(regularSeasonStats, 'regular-season-hc-tr-breakdown-tbody');
+    
     // Update regular season player stats table
     const regularSeasonPlayerTbody = document.getElementById('regular-season-player-stats-tbody');
     if (regularSeasonPlayerTbody) {
         let html = '';
         
+        // Players to exclude from Regular Season display
+        const excludedPlayers = ['0', '1', '23', '33'];
+        
         Object.keys(playerRoster).forEach(playerNum => {
+            // Skip excluded players (Ellis #1, Ithiel #23, Blackshear #0, El-Sheikh #33)
+            if (excludedPlayers.includes(playerNum)) {
+                return;
+            }
+            
             const stats = regularSeasonPlayerStats[playerNum];
             if (!stats || !stats.pressUp || !stats.atLevel) {
                 return;
@@ -2811,24 +3212,24 @@ function resetAllData() {
         // Reset current practice
         teamStats = {
             white: {
-                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } },
+                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } }
             },
             blue: {
-                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } },
+                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } }
             }
         };
         
         // Reset season totals
         seasonStats = {
             white: {
-                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } },
+                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } }
             },
             blue: {
-                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } },
-                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 } }
+                paintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } },
+                noPaintTouch: { possessions: 0, points: 0, scores: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, hc: { possessions: 0, points: 0 }, tr: { possessions: 0, points: 0 } }
             }
         };
         
@@ -3210,24 +3611,56 @@ function calculateQuarterStats(currentSnapshot, lastSnapshot) {
             paintTouch: {
                 possessions: currentSnapshot.teamStats.white.paintTouch.possessions - lastSnapshot.teamStats.white.paintTouch.possessions,
                 points: currentSnapshot.teamStats.white.paintTouch.points - lastSnapshot.teamStats.white.paintTouch.points,
-                scores: {}
+                scores: {},
+                hc: {
+                    possessions: (currentSnapshot.teamStats.white.paintTouch.hc?.possessions || 0) - (lastSnapshot.teamStats.white.paintTouch.hc?.possessions || 0),
+                    points: (currentSnapshot.teamStats.white.paintTouch.hc?.points || 0) - (lastSnapshot.teamStats.white.paintTouch.hc?.points || 0)
+                },
+                tr: {
+                    possessions: (currentSnapshot.teamStats.white.paintTouch.tr?.possessions || 0) - (lastSnapshot.teamStats.white.paintTouch.tr?.possessions || 0),
+                    points: (currentSnapshot.teamStats.white.paintTouch.tr?.points || 0) - (lastSnapshot.teamStats.white.paintTouch.tr?.points || 0)
+                }
             },
             noPaintTouch: {
                 possessions: currentSnapshot.teamStats.white.noPaintTouch.possessions - lastSnapshot.teamStats.white.noPaintTouch.possessions,
                 points: currentSnapshot.teamStats.white.noPaintTouch.points - lastSnapshot.teamStats.white.noPaintTouch.points,
-                scores: {}
+                scores: {},
+                hc: {
+                    possessions: (currentSnapshot.teamStats.white.noPaintTouch.hc?.possessions || 0) - (lastSnapshot.teamStats.white.noPaintTouch.hc?.possessions || 0),
+                    points: (currentSnapshot.teamStats.white.noPaintTouch.hc?.points || 0) - (lastSnapshot.teamStats.white.noPaintTouch.hc?.points || 0)
+                },
+                tr: {
+                    possessions: (currentSnapshot.teamStats.white.noPaintTouch.tr?.possessions || 0) - (lastSnapshot.teamStats.white.noPaintTouch.tr?.possessions || 0),
+                    points: (currentSnapshot.teamStats.white.noPaintTouch.tr?.points || 0) - (lastSnapshot.teamStats.white.noPaintTouch.tr?.points || 0)
+                }
             }
         },
         blue: {
             paintTouch: {
                 possessions: currentSnapshot.teamStats.blue.paintTouch.possessions - lastSnapshot.teamStats.blue.paintTouch.possessions,
                 points: currentSnapshot.teamStats.blue.paintTouch.points - lastSnapshot.teamStats.blue.paintTouch.points,
-                scores: {}
+                scores: {},
+                hc: {
+                    possessions: (currentSnapshot.teamStats.blue.paintTouch.hc?.possessions || 0) - (lastSnapshot.teamStats.blue.paintTouch.hc?.possessions || 0),
+                    points: (currentSnapshot.teamStats.blue.paintTouch.hc?.points || 0) - (lastSnapshot.teamStats.blue.paintTouch.hc?.points || 0)
+                },
+                tr: {
+                    possessions: (currentSnapshot.teamStats.blue.paintTouch.tr?.possessions || 0) - (lastSnapshot.teamStats.blue.paintTouch.tr?.possessions || 0),
+                    points: (currentSnapshot.teamStats.blue.paintTouch.tr?.points || 0) - (lastSnapshot.teamStats.blue.paintTouch.tr?.points || 0)
+                }
             },
             noPaintTouch: {
                 possessions: currentSnapshot.teamStats.blue.noPaintTouch.possessions - lastSnapshot.teamStats.blue.noPaintTouch.possessions,
                 points: currentSnapshot.teamStats.blue.noPaintTouch.points - lastSnapshot.teamStats.blue.noPaintTouch.points,
-                scores: {}
+                scores: {},
+                hc: {
+                    possessions: (currentSnapshot.teamStats.blue.noPaintTouch.hc?.possessions || 0) - (lastSnapshot.teamStats.blue.noPaintTouch.hc?.possessions || 0),
+                    points: (currentSnapshot.teamStats.blue.noPaintTouch.hc?.points || 0) - (lastSnapshot.teamStats.blue.noPaintTouch.hc?.points || 0)
+                },
+                tr: {
+                    possessions: (currentSnapshot.teamStats.blue.noPaintTouch.tr?.possessions || 0) - (lastSnapshot.teamStats.blue.noPaintTouch.tr?.possessions || 0),
+                    points: (currentSnapshot.teamStats.blue.noPaintTouch.tr?.points || 0) - (lastSnapshot.teamStats.blue.noPaintTouch.tr?.points || 0)
+                }
             }
         }
     };
@@ -3253,40 +3686,32 @@ function showQuarterReport() {
     const currentSnapshot = createCurrentSnapshot();
     const quarterStats = calculateQuarterStats(currentSnapshot, lastQuarterSnapshot);
     
-    let reportMessage = quarterStats.isFirstQuarter ? 
-        `🏀 Quarter ${quarterNumber} Report (Practice Start to Now)\n` :
-        `🏀 Quarter ${quarterNumber} Report (Since Last Report)\n`;
-    
-    reportMessage += `Time: ${currentSnapshot.timestamp}\n\n`;
+    let reportMessage = '';
 
     // Paint Touch Analysis for both teams
+    const teamResults = [];
     ['white', 'blue'].forEach(team => {
-        const teamName = team.charAt(0).toUpperCase() + team.slice(1);
+        const teamName = team === 'white' ? 'Off' : 'Def';
         const paintStats = quarterStats.teamStats[team].paintTouch;
         const noPaintStats = quarterStats.teamStats[team].noPaintTouch;
         const totalPoss = paintStats.possessions + noPaintStats.possessions;
         const totalPoints = paintStats.points + noPaintStats.points;
-
-        reportMessage += `${teamName} Team:\n`;
         
         if (totalPoss > 0) {
-            const paintPercent = ((paintStats.possessions / totalPoss) * 100).toFixed(1);
+            const paintPercent = ((paintStats.possessions / totalPoss) * 100).toFixed(0);
             const paintPPP = paintStats.possessions > 0 ? (paintStats.points / paintStats.possessions).toFixed(2) : '0.00';
             const noPaintPPP = noPaintStats.possessions > 0 ? (noPaintStats.points / noPaintStats.possessions).toFixed(2) : '0.00';
-            const overallPPP = (totalPoints / totalPoss).toFixed(2);
 
-            reportMessage += `  Total Possessions: ${totalPoss}\n`;
-            reportMessage += `  Paint Touch: ${paintStats.possessions} (${paintPercent}%) - ${paintPPP} PPP\n`;
-            reportMessage += `  No Paint Touch: ${noPaintStats.possessions} (${(100 - parseFloat(paintPercent)).toFixed(1)}%) - ${noPaintPPP} PPP\n`;
-            reportMessage += `  Overall PPP: ${overallPPP}\n`;
+            teamResults.push(`${teamName}: ${paintPercent}%, ${paintPPP} vs ${noPaintPPP}`);
         } else {
-            reportMessage += `  No possessions recorded\n`;
+            teamResults.push(`${teamName}: No possessions recorded`);
         }
-        reportMessage += '\n';
     });
+    
+    reportMessage += teamResults.join(' | ');
 
-    // Show the report
-    alert(reportMessage);
+    // Show the report in a prompt dialog (allows copying)
+    prompt('Quarter Report (Press Ctrl+C to copy, then click Cancel or OK):', reportMessage);
     
     // Update the snapshot for next quarter
     lastQuarterSnapshot = currentSnapshot;
@@ -3299,40 +3724,32 @@ function showHalfReport() {
     const currentSnapshot = createCurrentSnapshot();
     const halfStats = calculateQuarterStats(currentSnapshot, lastHalfSnapshot);
     
-    let reportMessage = halfStats.isFirstQuarter ? 
-        `🏀 Half ${halfNumber} Report (Practice Start to Now)\n` :
-        `🏀 Half ${halfNumber} Report (Since Last Half Report)\n`;
-    
-    reportMessage += `Time: ${currentSnapshot.timestamp}\n\n`;
+    let reportMessage = '';
 
     // Paint Touch Analysis for both teams
+    const teamResults = [];
     ['white', 'blue'].forEach(team => {
-        const teamName = team.charAt(0).toUpperCase() + team.slice(1);
+        const teamName = team === 'white' ? 'Off' : 'Def';
         const paintStats = halfStats.teamStats[team].paintTouch;
         const noPaintStats = halfStats.teamStats[team].noPaintTouch;
         const totalPoss = paintStats.possessions + noPaintStats.possessions;
         const totalPoints = paintStats.points + noPaintStats.points;
-
-        reportMessage += `${teamName} Team:\n`;
         
         if (totalPoss > 0) {
-            const paintPercent = ((paintStats.possessions / totalPoss) * 100).toFixed(1);
+            const paintPercent = ((paintStats.possessions / totalPoss) * 100).toFixed(0);
             const paintPPP = paintStats.possessions > 0 ? (paintStats.points / paintStats.possessions).toFixed(2) : '0.00';
             const noPaintPPP = noPaintStats.possessions > 0 ? (noPaintStats.points / noPaintStats.possessions).toFixed(2) : '0.00';
-            const overallPPP = (totalPoints / totalPoss).toFixed(2);
 
-            reportMessage += `  Total Possessions: ${totalPoss}\n`;
-            reportMessage += `  Paint Touch: ${paintStats.possessions} (${paintPercent}%) - ${paintPPP} PPP\n`;
-            reportMessage += `  No Paint Touch: ${noPaintStats.possessions} (${(100 - parseFloat(paintPercent)).toFixed(1)}%) - ${noPaintPPP} PPP\n`;
-            reportMessage += `  Overall PPP: ${overallPPP}\n`;
+            teamResults.push(`${teamName}: ${paintPercent}%, ${paintPPP} vs ${noPaintPPP}`);
         } else {
-            reportMessage += `  No possessions recorded\n`;
+            teamResults.push(`${teamName}: No possessions recorded`);
         }
-        reportMessage += '\n';
     });
+    
+    reportMessage += teamResults.join(' | ');
 
-    // Show the report
-    alert(reportMessage);
+    // Show the report in a prompt dialog (allows copying)
+    prompt('Half Report (Press Ctrl+C to copy, then click Cancel or OK):', reportMessage);
     
     // Update the snapshot for next half
     lastHalfSnapshot = currentSnapshot;
@@ -3358,6 +3775,10 @@ function loadJSONData(jsonString) {
         
         if (data.scrimmageStats) {
             scrimmageStats = data.scrimmageStats;
+            
+            // Migrate old data to include HC/TR structure
+            migrateTeamStatsStructure(scrimmageStats);
+            
             scrimmagePlayerStats = data.scrimmagePlayerStats || {};
             
             console.log('Loaded scrimmagePlayerStats:', scrimmagePlayerStats);
@@ -3389,6 +3810,10 @@ function loadRegularSeasonJSONData(jsonString) {
         
         if (data.regularSeasonStats) {
             regularSeasonStats = data.regularSeasonStats;
+            
+            // Migrate old data to include HC/TR structure
+            migrateTeamStatsStructure(regularSeasonStats);
+            
             regularSeasonPlayerStats = data.regularSeasonPlayerStats || {};
             
             console.log('Loaded regularSeasonPlayerStats:', regularSeasonPlayerStats);
@@ -3646,6 +4071,9 @@ function loadSnapshot(snapshotId) {
     scrimmageStats = JSON.parse(JSON.stringify(snapshot.data.scrimmageStats));
     scrimmagePlayerStats = JSON.parse(JSON.stringify(snapshot.data.scrimmagePlayerStats));
     
+    // Migrate old snapshot data to include HC/TR fields if missing
+    migrateTeamStatsStructure(scrimmageStats);
+    
     // Mark that we're viewing a snapshot
     isViewingSnapshot = true;
     
@@ -3870,7 +4298,15 @@ function subtractStats(endStat, startStat) {
     const result = {
         possessions: endStat.possessions - startStat.possessions,
         points: endStat.points - startStat.points,
-        scores: {}
+        scores: {},
+        hc: {
+            possessions: (endStat.hc?.possessions || 0) - (startStat.hc?.possessions || 0),
+            points: (endStat.hc?.points || 0) - (startStat.hc?.points || 0)
+        },
+        tr: {
+            possessions: (endStat.tr?.possessions || 0) - (startStat.tr?.possessions || 0),
+            points: (endStat.tr?.points || 0) - (startStat.tr?.points || 0)
+        }
     };
     
     for (let i = 0; i <= 4; i++) {
@@ -3902,10 +4338,23 @@ function displayComparisonResults(diffStats, diffPlayerStats, startName, endName
         const paintTouchPPP = paintTouchPoss > 0 ? (diffStats[team].paintTouch.points / paintTouchPoss).toFixed(2) : '0.00';
         const noPaintTouchPPP = noPaintTouchPoss > 0 ? (diffStats[team].noPaintTouch.points / noPaintTouchPoss).toFixed(2) : '0.00';
         
+        // Calculate HC/TR stats
+        const hcPoss = diffStats[team].paintTouch.hc.possessions + diffStats[team].noPaintTouch.hc.possessions;
+        const trPoss = diffStats[team].paintTouch.tr.possessions + diffStats[team].noPaintTouch.tr.possessions;
+        const hcPoints = diffStats[team].paintTouch.hc.points + diffStats[team].noPaintTouch.hc.points;
+        const trPoints = diffStats[team].paintTouch.tr.points + diffStats[team].noPaintTouch.tr.points;
+        
+        const trackedPoss = hcPoss + trPoss;
+        const trPercent = trackedPoss > 0 ? ((trPoss / trackedPoss) * 100).toFixed(1) : '0.0';
+        const hcPPP = hcPoss > 0 ? (hcPoints / hcPoss).toFixed(2) : '0.00';
+        const trPPP = trPoss > 0 ? (trPoints / trPoss).toFixed(2) : '0.00';
+        
         const paintPercentClass = parseFloat(paintTouchPercent) >= 70 ? 'percentage-high' : parseFloat(paintTouchPercent) >= 40 ? 'percentage-medium' : 'percentage-low';
         const noPaintPercentClass = parseFloat(noPaintTouchPercent) >= 70 ? 'percentage-high' : parseFloat(noPaintTouchPercent) >= 40 ? 'percentage-medium' : 'percentage-low';
         const paintPPPClass = parseFloat(paintTouchPPP) >= 1.5 ? 'percentage-high' : parseFloat(paintTouchPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
         const noPaintPPPClass = parseFloat(noPaintTouchPPP) >= 1.5 ? 'percentage-high' : parseFloat(noPaintTouchPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
+        const hcPPPClass = parseFloat(hcPPP) >= 1.5 ? 'percentage-high' : parseFloat(hcPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
+        const trPPPClass = parseFloat(trPPP) >= 1.5 ? 'percentage-high' : parseFloat(trPPP) >= 1.0 ? 'percentage-medium' : 'percentage-low';
         
         paintHtml += '<tr class="team-row-' + team + '">';
         paintHtml += '<td><strong>' + team.charAt(0).toUpperCase() + team.slice(1) + '</strong></td>';
@@ -3916,6 +4365,9 @@ function displayComparisonResults(diffStats, diffPlayerStats, startName, endName
         paintHtml += '<td><span class="highlight-number">' + noPaintTouchPoss + '</span></td>';
         paintHtml += '<td><span class="' + noPaintPercentClass + '">' + noPaintTouchPercent + '%</span></td>';
         paintHtml += '<td><span class="' + noPaintPPPClass + '">' + noPaintTouchPPP + '</span></td>';
+        paintHtml += '<td><span class="highlight-number">' + trPercent + '%</span></td>';
+        paintHtml += '<td><span class="' + hcPPPClass + '">' + hcPPP + '</span></td>';
+        paintHtml += '<td><span class="' + trPPPClass + '">' + trPPP + '</span></td>';
         paintHtml += '</tr>';
     });
     
@@ -3930,6 +4382,21 @@ function displayComparisonResults(diffStats, diffPlayerStats, startName, endName
     const overallPaintPPP = overallPaintPoss > 0 ? (overallPaintPoints / overallPaintPoss).toFixed(2) : '0.00';
     const overallNoPaintPPP = overallNoPaintPoss > 0 ? (overallNoPaintPoints / overallNoPaintPoss).toFixed(2) : '0.00';
     
+    // Calculate overall HC/TR stats
+    const overallHcPoss = diffStats.white.paintTouch.hc.possessions + diffStats.white.noPaintTouch.hc.possessions +
+                         diffStats.blue.paintTouch.hc.possessions + diffStats.blue.noPaintTouch.hc.possessions;
+    const overallTrPoss = diffStats.white.paintTouch.tr.possessions + diffStats.white.noPaintTouch.tr.possessions +
+                         diffStats.blue.paintTouch.tr.possessions + diffStats.blue.noPaintTouch.tr.possessions;
+    const overallHcPoints = diffStats.white.paintTouch.hc.points + diffStats.white.noPaintTouch.hc.points +
+                           diffStats.blue.paintTouch.hc.points + diffStats.blue.noPaintTouch.hc.points;
+    const overallTrPoints = diffStats.white.paintTouch.tr.points + diffStats.white.noPaintTouch.tr.points +
+                           diffStats.blue.paintTouch.tr.points + diffStats.blue.noPaintTouch.tr.points;
+    
+    const overallTrackedPoss = overallHcPoss + overallTrPoss;
+    const overallTrPercent = overallTrackedPoss > 0 ? ((overallTrPoss / overallTrackedPoss) * 100).toFixed(1) : '0.0';
+    const overallHcPPP = overallHcPoss > 0 ? (overallHcPoints / overallHcPoss).toFixed(2) : '0.00';
+    const overallTrPPP = overallTrPoss > 0 ? (overallTrPoints / overallTrPoss).toFixed(2) : '0.00';
+    
     paintHtml += '<tr class="team-row-overall">';
     paintHtml += '<td><strong>OVERALL</strong></td>';
     paintHtml += '<td><span class="highlight-number">' + overallTotalPoss + '</span></td>';
@@ -3939,6 +4406,9 @@ function displayComparisonResults(diffStats, diffPlayerStats, startName, endName
     paintHtml += '<td><span class="highlight-number">' + overallNoPaintPoss + '</span></td>';
     paintHtml += '<td><span>' + overallNoPaintPercent + '%</span></td>';
     paintHtml += '<td><span>' + overallNoPaintPPP + '</span></td>';
+    paintHtml += '<td><span class="highlight-number">' + overallTrPercent + '%</span></td>';
+    paintHtml += '<td><span>' + overallHcPPP + '</span></td>';
+    paintHtml += '<td><span>' + overallTrPPP + '</span></td>';
     paintHtml += '</tr>';
     
     paintTbody.innerHTML = paintHtml;
@@ -3946,26 +4416,29 @@ function displayComparisonResults(diffStats, diffPlayerStats, startName, endName
     // Player stats table
     const playerTbody = document.getElementById('comparison-player-tbody');
     let playerHtml = '';
+    let rowIndex = 0;
     
     Object.keys(diffPlayerStats).forEach(playerNum => {
         const stats = diffPlayerStats[playerNum];
-        const totalActions = stats.pressUp.positive + stats.pressUp.negative + stats.atLevel.positive + stats.atLevel.negative;
+        const pressUpTotal = stats.pressUp.positive + stats.pressUp.negative;
+        const atLevelTotal = stats.atLevel.positive + stats.atLevel.negative;
+        const totalActions = pressUpTotal + atLevelTotal;
         
         // Only show players with activity
         if (totalActions > 0) {
             const pressUpRate = calculateRate(stats.pressUp.positive, stats.pressUp.negative);
             const atLevelRate = calculateRate(stats.atLevel.positive, stats.atLevel.negative);
+            const rowClass = rowIndex % 2 === 0 ? 'row-even' : 'row-odd';
             
-            playerHtml += '<tr>';
+            playerHtml += '<tr class="' + rowClass + '">';
             playerHtml += '<td><strong>#' + playerNum + ' ' + (playerRoster[playerNum] || 'Unknown') + '</strong></td>';
-            playerHtml += '<td><span class="highlight-number">' + stats.pressUp.positive + '</span></td>';
-            playerHtml += '<td><span class="highlight-number">' + stats.pressUp.negative + '</span></td>';
+            playerHtml += '<td><span class="highlight-number">' + pressUpTotal + '</span></td>';
             playerHtml += '<td><span class="' + getRateClass(pressUpRate) + '">' + pressUpRate + '%</span></td>';
-            playerHtml += '<td><span class="highlight-number">' + stats.atLevel.positive + '</span></td>';
-            playerHtml += '<td><span class="highlight-number">' + stats.atLevel.negative + '</span></td>';
+            playerHtml += '<td><span class="highlight-number">' + atLevelTotal + '</span></td>';
             playerHtml += '<td><span class="' + getRateClass(atLevelRate) + '">' + atLevelRate + '%</span></td>';
             playerHtml += '<td><span class="highlight-number">' + totalActions + '</span></td>';
             playerHtml += '</tr>';
+            rowIndex++;
         }
     });
     
@@ -3988,19 +4461,15 @@ function displayComparisonResults(diffStats, diffPlayerStats, startName, endName
     const pressUpTotal = pressUpPos + pressUpNeg;
     const atLevelTotal = atLevelPos + atLevelNeg;
     
-    teamPressTbody.innerHTML = '<tr class="team-row-overall">' +
+    teamPressTbody.innerHTML = '<tr class="row-even">' +
         '<td><strong>Press Up</strong></td>' +
-        '<td><span class="highlight-number">' + pressUpPos + '</span></td>' +
-        '<td><span class="highlight-number">' + pressUpNeg + '</span></td>' +
-        '<td><span class="' + getRateClass(pressUpRate) + '">' + pressUpRate + '%</span></td>' +
         '<td><span class="highlight-number">' + pressUpTotal + '</span></td>' +
+        '<td><span class="' + getRateClass(pressUpRate) + '">' + pressUpRate + '%</span></td>' +
         '</tr>' +
-        '<tr class="team-row-overall">' +
+        '<tr class="row-odd">' +
         '<td><strong>At Level</strong></td>' +
-        '<td><span class="highlight-number">' + atLevelPos + '</span></td>' +
-        '<td><span class="highlight-number">' + atLevelNeg + '</span></td>' +
-        '<td><span class="' + getRateClass(atLevelRate) + '">' + atLevelRate + '%</span></td>' +
         '<td><span class="highlight-number">' + atLevelTotal + '</span></td>' +
+        '<td><span class="' + getRateClass(atLevelRate) + '">' + atLevelRate + '%</span></td>' +
         '</tr>';
 }
 
@@ -4088,6 +4557,9 @@ function loadRegularSeasonSnapshot(snapshotId) {
     // Load the snapshot data for DISPLAY ONLY
     regularSeasonStats = JSON.parse(JSON.stringify(snapshot.data.regularSeasonStats));
     regularSeasonPlayerStats = JSON.parse(JSON.stringify(snapshot.data.regularSeasonPlayerStats));
+    
+    // Migrate old snapshot data to include HC/TR fields if missing
+    migrateTeamStatsStructure(regularSeasonStats);
     
     // Mark that we're viewing a snapshot
     isViewingRegularSeasonSnapshot = true;
@@ -4316,33 +4788,25 @@ function sortComparisonPlayerTable(column) {
                 aValue = a.cells[0].textContent.trim();
                 bValue = b.cells[0].textContent.trim();
                 break;
-            case 'pressUpPos':
+            case 'pressUpTotal':
                 aValue = parseInt(a.cells[1].textContent) || 0;
                 bValue = parseInt(b.cells[1].textContent) || 0;
                 break;
-            case 'pressUpNeg':
-                aValue = parseInt(a.cells[2].textContent) || 0;
-                bValue = parseInt(b.cells[2].textContent) || 0;
-                break;
             case 'pressUpRate':
-                aValue = parseFloat(a.cells[3].textContent.replace('%', '')) || 0;
-                bValue = parseFloat(b.cells[3].textContent.replace('%', '')) || 0;
+                aValue = parseFloat(a.cells[2].textContent.replace('%', '')) || 0;
+                bValue = parseFloat(b.cells[2].textContent.replace('%', '')) || 0;
                 break;
-            case 'atLevelPos':
-                aValue = parseInt(a.cells[4].textContent) || 0;
-                bValue = parseInt(b.cells[4].textContent) || 0;
-                break;
-            case 'atLevelNeg':
-                aValue = parseInt(a.cells[5].textContent) || 0;
-                bValue = parseInt(b.cells[5].textContent) || 0;
+            case 'atLevelTotal':
+                aValue = parseInt(a.cells[3].textContent) || 0;
+                bValue = parseInt(b.cells[3].textContent) || 0;
                 break;
             case 'atLevelRate':
-                aValue = parseFloat(a.cells[6].textContent.replace('%', '')) || 0;
-                bValue = parseFloat(b.cells[6].textContent.replace('%', '')) || 0;
+                aValue = parseFloat(a.cells[4].textContent.replace('%', '')) || 0;
+                bValue = parseFloat(b.cells[4].textContent.replace('%', '')) || 0;
                 break;
             case 'totalActions':
-                aValue = parseInt(a.cells[7].textContent) || 0;
-                bValue = parseInt(b.cells[7].textContent) || 0;
+                aValue = parseInt(a.cells[5].textContent) || 0;
+                bValue = parseInt(b.cells[5].textContent) || 0;
                 break;
             default:
                 return 0;
@@ -4388,21 +4852,13 @@ function sortComparisonTeamPressTable(column) {
                 aValue = a.cells[0].textContent.trim();
                 bValue = b.cells[0].textContent.trim();
                 break;
-            case 'totalPos':
+            case 'totalActions':
                 aValue = parseInt(a.cells[1].textContent) || 0;
                 bValue = parseInt(b.cells[1].textContent) || 0;
                 break;
-            case 'totalNeg':
-                aValue = parseInt(a.cells[2].textContent) || 0;
-                bValue = parseInt(b.cells[2].textContent) || 0;
-                break;
             case 'successRate':
-                aValue = parseFloat(a.cells[3].textContent.replace('%', '')) || 0;
-                bValue = parseFloat(b.cells[3].textContent.replace('%', '')) || 0;
-                break;
-            case 'totalActions':
-                aValue = parseInt(a.cells[4].textContent) || 0;
-                bValue = parseInt(b.cells[4].textContent) || 0;
+                aValue = parseFloat(a.cells[2].textContent.replace('%', '')) || 0;
+                bValue = parseFloat(b.cells[2].textContent.replace('%', '')) || 0;
                 break;
             default:
                 return 0;
@@ -4424,6 +4880,14 @@ function sortComparisonTeamPressTable(column) {
     header.classList.add(`sorted-${comparisonTeamPressSortOrder}`);
 }
 
+// Reset player #1 stats (Ellis replacing Ashworth - start fresh)
+function resetPlayer1Stats() {
+    playerStats[1] = { pressUp: { positive: 0, negative: 0 }, atLevel: { positive: 0, negative: 0 } };
+    seasonPlayerStats[1] = { pressUp: { positive: 0, negative: 0 }, atLevel: { positive: 0, negative: 0 } };
+    scrimmagePlayerStats[1] = { pressUp: { positive: 0, negative: 0 }, atLevel: { positive: 0, negative: 0 } };
+    regularSeasonPlayerStats[1] = { pressUp: { positive: 0, negative: 0 }, atLevel: { positive: 0, negative: 0 } };
+}
+
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM Content Loaded - Starting app initialization');
@@ -4439,6 +4903,9 @@ document.addEventListener('DOMContentLoaded', () => {
         actualScrimmageStats = JSON.parse(JSON.stringify(scrimmageStats));
         actualScrimmagePlayerStats = JSON.parse(JSON.stringify(scrimmagePlayerStats));
     }
+    
+    // Reset player #1 stats for fresh start with Ellis
+    resetPlayer1Stats();
     
     if (hasLoadedData) {
         showStatus('Previous session restored!');
@@ -4510,6 +4977,33 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('No paint touch button event listener attached');
     } else {
         console.error('No paint touch button not found!');
+    }
+    
+    // Transition mode buttons
+    const hcModeBtn = document.querySelector('.transition-toggle.hc-mode');
+    if (hcModeBtn) {
+        hcModeBtn.addEventListener('click', () => {
+            console.log('HC mode button clicked');
+            activeTransitionMode = 'hc';
+            updateActiveTeamDisplay();
+            showStatus('Transition Mode: HC (Halfcourt)');
+        });
+        console.log('HC mode button event listener attached');
+    } else {
+        console.error('HC mode button not found!');
+    }
+    
+    const trModeBtn = document.querySelector('.transition-toggle.tr-mode');
+    if (trModeBtn) {
+        trModeBtn.addEventListener('click', () => {
+            console.log('TR mode button clicked');
+            activeTransitionMode = 'tr';
+            updateActiveTeamDisplay();
+            showStatus('Transition Mode: TR (Transition)');
+        });
+        console.log('TR mode button event listener attached');
+    } else {
+        console.error('TR mode button not found!');
     }
     
     // Score buttons

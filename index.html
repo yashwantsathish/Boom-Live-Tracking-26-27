@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basketball Paint Touch & Scoring Analytics</title>
+    <title>Boom Paint Touch and Ball Screen Defense Tracker</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Basketball Paint Touch & Scoring Analytics</h1>
-            <h2>Team Performance Tracking</h2>
+            <h1>Boom Analytics Tracking Web App</h1>
+            <h2>Paint Touches & Ballscreen Defense</h2>
             
             <!-- Tab Navigation -->
             <div class="tab-navigation">
@@ -18,7 +18,7 @@
                 <button class="tab-btn" data-tab="regular-season">Regular Season</button>
                 <button class="tab-btn" data-tab="scrimmage-totals">Tipoff Tourney</button>
                 <button class="tab-btn" data-tab="first-5">First 5</button>
-                <button class="tab-btn" data-tab="snapshot-comparison">📊 Snapshot Comparison</button>
+                <button class="tab-btn" data-tab="snapshot-comparison">Snapshot Comparison</button>
             </div>
         </header>
 
@@ -35,14 +35,16 @@
             </div>
             
             <div class="current-status" id="current-status">
-                <strong>Active Team:</strong> White | <strong>Mode:</strong> Paint Touch
+                <strong>Active Team:</strong> White | <strong>Mode:</strong> Paint Touch | <strong>Transition:</strong> HC
             </div>  
             
             <div class="control-panel">
                 <div class="team-selection">
-                    <h4>Team Selection</h4>
-                    <button class="team-selector active" data-team="white">White Tea    m</button>
-                    <button class="team-selector" data-team="blue">Blue Team</button>
+                    <h4>Team</h4>
+                    <div class="team-buttons-vertical">
+                        <button class="team-selector active" data-team="white">White Team</button>
+                        <button class="team-selector" data-team="blue">Blue Team</button>
+                    </div>
                 </div>
                 
                 <div class="paint-touch-selection">
@@ -51,13 +53,23 @@
                     <button class="paint-touch-toggle no-paint-touch">No Paint Touch</button>
                 </div>
                 
+                <div class="transition-mode-selection">
+                    <h4>Transition Mode</h4>
+                    <div class="transition-buttons-vertical">
+                        <button class="transition-toggle hc-mode active">HC</button>
+                        <button class="transition-toggle tr-mode">TR</button>
+                    </div>
+                </div>
+                
                 <div class="score-selection">
                     <h4>Score Points</h4>
-                    <button class="score-btn" data-points="0">0 Points</button>
-                    <button class="score-btn" data-points="1">1 Point</button>
-                    <button class="score-btn" data-points="2">2 Points</button>
-                    <button class="score-btn" data-points="3">3 Points</button>
-                    <button class="score-btn" data-points="4">4 Points</button>
+                    <div class="score-buttons-vertical">
+                        <button class="score-btn" data-points="0">0 Points</button>
+                        <button class="score-btn" data-points="1">1 Point</button>
+                        <button class="score-btn" data-points="2">2 Points</button>
+                        <button class="score-btn" data-points="3">3 Points</button>
+                        <button class="score-btn" data-points="4">4 Points</button>
+                    </div>
                 </div>
                 
                 <div class="action-buttons">
@@ -108,7 +120,7 @@
                     <h4>Select Player</h4>
                     <div class="player-buttons">
                         <button class="player-btn" data-player="0">#0 Blackshear</button>
-                        <button class="player-btn" data-player="1">#1 Ashworth</button>
+                        <button class="player-btn" data-player="1">#1 Ellis</button>
                         <button class="player-btn" data-player="2">#2 Guy</button>
                         <button class="player-btn" data-player="3">#3 Gordon</button>
                         <button class="player-btn" data-player="4">#4 Peter</button>
@@ -124,7 +136,7 @@
                         <button class="player-btn" data-player="23">#23 Ithiel</button>
                         <button class="player-btn" data-player="29">#29 Jackson</button>
                         <button class="player-btn" data-player="30">#30 McGlothan</button>
-                        <button class="player-btn" data-player="31">#31 Taylor</button>
+                        <button class="player-btn" data-player="31">#31 Martin</button>
                         <button class="player-btn" data-player="33">#33 El-Sheikh</button>
                         <button class="player-btn" data-player="35">#35 Johnson</button>
                     </div>
@@ -207,10 +219,37 @@
                             <th class="sortable" data-column="noPaintPoss">No Paint Touch Poss</th>
                             <th class="sortable" data-column="noPaintPercent">No Paint Touch %</th>
                             <th class="sortable" data-column="noPaintPPP">No Paint Touch PPP</th>
+                            <th class="sortable" data-column="trPercent">TR %</th>
+                            <th class="sortable" data-column="hcPPP">HC PPP</th>
+                            <th class="sortable" data-column="trPPP">TR PPP</th>
                         </tr>
                     </thead>
                     <tbody id="paint-percentage-tbody">
                         <!-- Paint touch percentages will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- HC/TR Paint Touch Breakdown -->
+            <div class="stats-table-container" style="margin-top: 30px;">
+                <h4>HC/TR Paint Touch Breakdown</h4>
+                <table id="hc-tr-breakdown-table">
+                    <thead>
+                        <tr>
+                            <th class="sortable" data-column="team">Team</th>
+                            <th class="sortable" data-column="mode">Mode</th>
+                            <th class="sortable" data-column="totalPoss">Total Poss</th>
+                            <th class="sortable" data-column="paintPoss">Paint Touch Poss</th>
+                            <th class="sortable" data-column="ptPercent">% of PT</th>
+                            <th class="sortable" data-column="paintPercent">Paint Touch %</th>
+                            <th class="sortable" data-column="paintPPP">Paint Touch PPP</th>
+                            <th class="sortable" data-column="noPaintPoss">No Paint Poss</th>
+                            <th class="sortable" data-column="noPaintPercent">No Paint %</th>
+                            <th class="sortable" data-column="noPaintPPP">No Paint PPP</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hc-tr-breakdown-tbody">
+                        <!-- HC/TR breakdown will be populated here -->
                     </tbody>
                 </table>
             </div>
@@ -324,10 +363,37 @@
                                 <th data-column="noPaintPoss" class="sortable">No Paint Touch Possessions</th>
                                 <th data-column="noPaintPercent" class="sortable">No Paint Touch %</th>
                                 <th data-column="noPaintPPP" class="sortable">No Paint Touch PPP</th>
+                                <th data-column="trPercent" class="sortable">TR %</th>
+                                <th data-column="hcPPP" class="sortable">HC PPP</th>
+                                <th data-column="trPPP" class="sortable">TR PPP</th>
                             </tr>
                         </thead>
                         <tbody id="regular-season-paint-percentage-tbody">
                             <!-- Regular Season data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Regular Season HC/TR Paint Touch Breakdown -->
+                <div class="table-container">
+                    <h4>Regular Season HC/TR Paint Touch Breakdown</h4>
+                    <table id="regular-season-hc-tr-breakdown-table" class="stats-table">
+                        <thead>
+                            <tr>
+                                <th class="sortable" data-column="team">Team</th>
+                                <th class="sortable" data-column="mode">Mode</th>
+                                <th class="sortable" data-column="totalPoss">Total Poss</th>
+                                <th class="sortable" data-column="paintPoss">Paint Touch Poss</th>
+                                <th class="sortable" data-column="ptPercent">% of PT</th>
+                                <th class="sortable" data-column="paintPercent">Paint Touch %</th>
+                                <th class="sortable" data-column="paintPPP">Paint Touch PPP</th>
+                                <th class="sortable" data-column="noPaintPoss">No Paint Poss</th>
+                                <th class="sortable" data-column="noPaintPercent">No Paint %</th>
+                                <th class="sortable" data-column="noPaintPPP">No Paint PPP</th>
+                            </tr>
+                        </thead>
+                        <tbody id="regular-season-hc-tr-breakdown-tbody">
+                            <!-- Regular Season HC/TR breakdown will be populated here -->
                         </tbody>
                     </table>
                 </div>
@@ -432,10 +498,37 @@
                                 <th data-column="noPaintPoss" class="sortable">No Paint Touch Possessions</th>
                                 <th data-column="noPaintPercent" class="sortable">No Paint Touch %</th>
                                 <th data-column="noPaintPPP" class="sortable">No Paint Touch PPP</th>
+                                <th data-column="trPercent" class="sortable">TR %</th>
+                                <th data-column="hcPPP" class="sortable">HC PPP</th>
+                                <th data-column="trPPP" class="sortable">TR PPP</th>
                             </tr>
                         </thead>
                         <tbody id="scrimmage-paint-percentage-tbody">
                             <!-- Scrimmage data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Tipoff Tourney HC/TR Paint Touch Breakdown -->
+                <div class="table-container">
+                    <h4>Tipoff Tourney HC/TR Paint Touch Breakdown</h4>
+                    <table id="scrimmage-hc-tr-breakdown-table" class="stats-table">
+                        <thead>
+                            <tr>
+                                <th class="sortable" data-column="team">Team</th>
+                                <th class="sortable" data-column="mode">Mode</th>
+                                <th class="sortable" data-column="totalPoss">Total Poss</th>
+                                <th class="sortable" data-column="paintPoss">Paint Touch Poss</th>
+                                <th class="sortable" data-column="ptPercent">% of PT</th>
+                                <th class="sortable" data-column="paintPercent">Paint Touch %</th>
+                                <th class="sortable" data-column="paintPPP">Paint Touch PPP</th>
+                                <th class="sortable" data-column="noPaintPoss">No Paint Poss</th>
+                                <th class="sortable" data-column="noPaintPercent">No Paint %</th>
+                                <th class="sortable" data-column="noPaintPPP">No Paint PPP</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scrimmage-hc-tr-breakdown-tbody">
+                            <!-- Tipoff Tourney HC/TR breakdown will be populated here -->
                         </tbody>
                     </table>
                 </div>
@@ -603,6 +696,9 @@
                                     <th class="sortable" data-column="noPaintPoss">No Paint Touch Possessions</th>
                                     <th class="sortable" data-column="noPaintPercent">No Paint Touch %</th>
                                     <th class="sortable" data-column="noPaintPPP">No Paint Touch PPP</th>
+                                    <th class="sortable" data-column="trPercent">TR%</th>
+                                    <th class="sortable" data-column="hcPPP">HC PPP</th>
+                                    <th class="sortable" data-column="trPPP">TR PPP</th>
                                 </tr>
                             </thead>
                             <tbody id="comparison-paint-tbody">
@@ -617,11 +713,9 @@
                             <thead>
                                 <tr>
                                     <th class="sortable" data-column="player">Player</th>
-                                    <th class="sortable" data-column="pressUpPos">Press Up +</th>
-                                    <th class="sortable" data-column="pressUpNeg">Press Up -</th>
+                                    <th class="sortable" data-column="pressUpTotal">Press Up Actions</th>
                                     <th class="sortable" data-column="pressUpRate">Press Up %</th>
-                                    <th class="sortable" data-column="atLevelPos">At Level +</th>
-                                    <th class="sortable" data-column="atLevelNeg">At Level -</th>
+                                    <th class="sortable" data-column="atLevelTotal">At Level Actions</th>
                                     <th class="sortable" data-column="atLevelRate">At Level %</th>
                                     <th class="sortable" data-column="totalActions">Total Actions</th>
                                 </tr>
@@ -638,10 +732,8 @@
                             <thead>
                                 <tr>
                                     <th class="sortable" data-column="category">Category</th>
-                                    <th class="sortable" data-column="totalPos">Total Positive</th>
-                                    <th class="sortable" data-column="totalNeg">Total Negative</th>
-                                    <th class="sortable" data-column="successRate">Success Rate</th>
                                     <th class="sortable" data-column="totalActions">Total Actions</th>
+                                    <th class="sortable" data-column="successRate">Success Rate</th>
                                 </tr>
                             </thead>
                             <tbody id="comparison-team-press-tbody">
